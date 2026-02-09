@@ -1,0 +1,1442 @@
+artist,song,duration_ms,explicit,year,popularity,genre
+Missy Elliott,Hot Boyz,215466,TRUE,1998,49,"hip hop, pop, R&B"
+Enrique Iglesias,Be With You,219360,FALSE,1999,54,"pop, latin"
+Melanie C,I Turn To You,352173,FALSE,1999,54,"pop, Dance/Electronic"
+Savage Garden,Crash and Burn,281466,FALSE,1999,54,pop
+Anastacia,Sick and Tired,212266,FALSE,1999,56,pop
+Eiffel 65,Move Your Body - Gabry Ponte Original Radio Edit,268863,FALSE,1999,56,pop
+Madison Avenue,Don't Call Me Baby,228140,FALSE,1999,56,Dance/Electronic
+Marc Anthony,You Sang To Me,347106,FALSE,1999,56,"pop, latin"
+Donell Jones,Where I Wanna Be,253626,FALSE,1999,57,"pop, R&B"
+Britney Spears,Born to Make You Happy,243533,FALSE,1999,58,pop
+Mariah Carey,Thank God I Found You (feat. Joe & 98°),257360,FALSE,1999,59,"pop, R&B"
+Montell Jordan,Get It On Tonite,276266,FALSE,1999,59,"hip hop, pop, R&B"
+Sisqo,Incomplete,274226,TRUE,1999,60,"hip hop, pop, R&B"
+Christina Aguilera,I Turn to You,273706,FALSE,1999,61,pop
+Melanie C,Never Be The Same Again,294200,FALSE,1999,61,"pop, Dance/Electronic"
+Sting,Desert Rose,285960,FALSE,1999,62,"rock, pop"
+Donell Jones,"U Know What's Up (feat. Lisa ""Left Eye"" Lopes)",243733,TRUE,1999,63,"pop, R&B"
+Anastacia,I'm Outta Love - Radio Edit,245400,FALSE,1999,64,pop
+Céline Dion,That's the Way It Is,241373,FALSE,1999,64,pop
+Christina Aguilera,Come on over Baby (All I Want Is You) - Radio Version,203333,FALSE,1999,64,pop
+Creed,With Arms Wide Open,274800,FALSE,1999,64,"pop, rock, metal"
+Gigi D'Agostino,The Riddle,285426,FALSE,1999,64,pop
+Tom Jones,Sexbomb,211893,FALSE,1999,65,"rock, Folk/Acoustic, easy listening"
+Faith Hill,Breathe,250546,FALSE,1999,66,"pop, country"
+Santana,Maria Maria (feat. The Product G&B),261973,FALSE,1999,66,"rock, blues, latin"
+Backstreet Boys,Show Me the Meaning of Being Lonely,234960,FALSE,1999,68,pop
+Creed,Higher,316733,FALSE,1999,69,"pop, rock, metal"
+JAY-Z,Big Pimpin',283066,TRUE,1999,69,hip hop
+Sisqo,Thong Song,253733,TRUE,1999,69,"hip hop, pop, R&B"
+Destiny's Child,"Jumpin', Jumpin'",230200,FALSE,1999,70,"pop, R&B"
+Crazy Town,Butterfly,216733,FALSE,1999,71,"rock, metal"
+DMX,Party Up,268866,TRUE,1999,71,"hip hop, pop"
+Wheatus,Teenage Dirtbag,241666,TRUE,1999,71,set()
+Dido,Thank You,218360,FALSE,1999,73,pop
+Destiny's Child,Say My Name,271333,FALSE,1999,75,"pop, R&B"
+Red Hot Chili Peppers,Otherside,255373,FALSE,1999,78,rock
+blink-182,All The Small Things,167066,FALSE,1999,79,"rock, pop"
+Dr. Dre,Forgot About Dre,222293,TRUE,1999,79,hip hop
+Dr. Dre,The Next Episode,161506,TRUE,1999,82,hip hop
+Musiq Soulchild,Love,304666,FALSE,2000,0,"pop, R&B"
+Oasis,Go Let It Out,278666,FALSE,2000,0,"Folk/Acoustic, rock"
+Nelly Furtado,I'm Like A Bird,243160,FALSE,2000,1,"hip hop, pop, latin"
+Nelly Furtado,Turn Off The Light,276106,FALSE,2000,1,"hip hop, pop, latin"
+Bow Wow,Bounce With Me (feat. Xscape) - Edited Album Version,175893,FALSE,2000,36,"hip hop, pop, R&B"
+Tamia,Stranger in My House,285386,FALSE,2000,48,"pop, R&B"
+Debelah Morgan,Dance with Me,220106,FALSE,2000,49,"pop, R&B"
+Fuel,Hemorrhage (In My Hands),236866,FALSE,2000,49,"rock, pop, metal"
+Roger Sanchez,Another Chance,452906,FALSE,2000,50,Dance/Electronic
+Carl Thomas,I Wish,226760,FALSE,2000,52,"pop, R&B"
+P!nk,Most Girls,298960,FALSE,2000,52,pop
+Ruff Endz,No More,242560,FALSE,2000,52,R&B
+Da Brat,What'chu Like (feat. Tyrese),221160,TRUE,2000,53,"hip hop, pop, R&B"
+Madonna,Don't Tell Me,280973,FALSE,2000,53,pop
+Steps,It's the Way You Make Me Feel,197360,FALSE,2000,53,"pop, Dance/Electronic"
+Erykah Badu,Bag Lady,348893,FALSE,2000,54,"hip hop, R&B"
+Ludacris,Southern Hospitality (Featuring Pharrell),300933,TRUE,2000,54,"hip hop, pop"
+M.O.P.,Cold as Ice,244466,TRUE,2000,54,hip hop
+Matchbox Twenty,Bent,256133,FALSE,2000,54,"pop, rock"
+Moloko,The Time Is Now,318280,FALSE,2000,54,"pop, Dance/Electronic"
+Avant,Separated,255600,FALSE,2000,55,"pop, R&B"
+Bomfunk MC's,Freestyler,306333,FALSE,2000,55,pop
+Jagged Edge,He Can't Love U,244053,FALSE,2000,55,"hip hop, pop, R&B"
+Kandi,Don't Think I'm Not,243533,FALSE,2000,55,"pop, R&B"
+Kylie Minogue,Spinning Around,207866,FALSE,2000,55,"pop, Dance/Electronic"
+Kylie Minogue,Spinning Around,207866,FALSE,2000,55,"pop, Dance/Electronic"
+P!nk,There You Go,202800,FALSE,2000,55,pop
+Sammie,I Like It,251040,FALSE,2000,55,"hip hop, pop, R&B"
+3LW,No More (Baby I'ma Do Right),263440,FALSE,2000,56,"pop, R&B"
+Jagged Edge,Promise,246720,FALSE,2000,56,"hip hop, pop, R&B"
+OPM,Heaven Is a Halfpipe (If I Die),257426,TRUE,2000,56,rock
+Joe,Stutter (feat. Mystikal) - Double Take Remix,213026,FALSE,2000,57,"pop, R&B"
+Mystikal,Shake Ya Ass,256973,TRUE,2000,57,"hip hop, pop"
+Madonna,Music,225973,FALSE,2000,58,pop
+Madonna,American Pie,273533,FALSE,2000,58,pop
+Ronan Keating,Lovin' Each Day,212973,FALSE,2000,58,"pop, rock"
+Vengaboys,Shalala Lala,214819,FALSE,2000,58,pop
+JAY-Z,I Just Wanna Love U (Give It 2 Me),227866,TRUE,2000,59,hip hop
+Mýa,Case Of The Ex (Whatcha Gonna Do),236906,FALSE,2000,59,"pop, R&B"
+Ronan Keating,Life Is A Rollercoaster,234826,FALSE,2000,59,"pop, rock"
+*NSYNC,It's Gonna Be Me,191040,FALSE,2000,60,pop
+Craig David,Fill Me In,257200,FALSE,2000,60,"hip hop, pop, R&B"
+Craig David,Fill Me In,257200,FALSE,2000,60,"hip hop, pop, R&B"
+Ricky Martin,She Bangs - English Version,280626,FALSE,2000,60,"pop, latin"
+Lifehouse,Hanging By A Moment,216360,FALSE,2000,61,"pop, rock, metal"
+All Saints,Pure Shores,268746,FALSE,2000,62,pop
+Sonique,It Feels So Good,240866,FALSE,2000,62,pop
+Mary Mary,Shackles (Praise You),198346,FALSE,2000,64,R&B
+*NSYNC,Bye Bye Bye,200560,FALSE,2000,65,pop
+Baha Men,Who Let The Dogs Out,198400,FALSE,2000,65,R&B
+Britney Spears,Lucky,206226,FALSE,2000,65,pop
+Joe,I Wanna Know,296693,FALSE,2000,65,"pop, R&B"
+Toni Braxton,He Wasn't Man Enough,261933,FALSE,2000,66,"pop, R&B"
+Lenny Kravitz,Again,231666,FALSE,2000,68,"rock, pop"
+Nelly,Country Grammar (Hot Shit),287000,TRUE,2000,68,"hip hop, pop, R&B"
+Robbie Williams,Rock DJ,258560,FALSE,2000,68,"pop, rock"
+The Corrs,Breathless,207506,FALSE,2000,68,"pop, Folk/Acoustic"
+Westlife,My Love,231760,FALSE,2000,68,pop
+Enya,Only Time,218546,FALSE,2000,69,"World/Traditional, Folk/Acoustic"
+Backstreet Boys,Shape of My Heart,230093,FALSE,2000,70,pop
+Craig David,7 Days,235133,FALSE,2000,70,"hip hop, pop, R&B"
+Limp Bizkit,Take A Look Around,321040,FALSE,2000,72,metal
+Alice Deejay,Better Off Alone,214883,FALSE,2000,73,pop
+Limp Bizkit,Rollin' (Air Raid Vehicle),213760,TRUE,2000,73,metal
+Nelly,Ride Wit Me,291781,TRUE,2000,75,"hip hop, pop, R&B"
+Shaggy,It Wasn't Me,227600,FALSE,2000,76,"hip hop, pop"
+Britney Spears,Oops!...I Did It Again,211160,FALSE,2000,77,pop
+3 Doors Down,Kryptonite,233933,FALSE,2000,78,"pop, rock, metal"
+Bon Jovi,It's My Life,224493,FALSE,2000,78,"rock, metal"
+Outkast,Ms. Jackson,270506,TRUE,2000,82,"hip hop, pop"
+Eminem,Stan,404106,TRUE,2000,83,hip hop
+Linkin Park,In the End,216880,FALSE,2000,83,"rock, metal"
+Linkin Park,In the End,216880,FALSE,2000,83,"rock, metal"
+Eminem,The Real Slim Shady,284200,TRUE,2000,86,hip hop
+Basement Jaxx,Romeo,217493,FALSE,2001,0,"pop, Dance/Electronic"
+Jennifer Lopez,Ain't It Funny,246160,FALSE,2001,0,"hip hop, pop, R&B"
+No Doubt,Hey Baby,207040,FALSE,2001,24,"rock, pop"
+No Doubt,Hella Good,242586,FALSE,2001,26,"rock, pop"
+No Doubt,Underneath It All,302720,FALSE,2001,27,"rock, pop"
+Mary J. Blige,Rainy Dayz,276373,FALSE,2001,32,"pop, R&B"
+Default,Wasting My Time,268693,FALSE,2001,40,"rock, pop, metal"
+Mariah Carey,Loverboy,229173,FALSE,2001,42,"pop, R&B"
+Jessica Simpson,Irresistible,194026,FALSE,2001,43,"pop, R&B"
+*NSYNC,Gone,292000,FALSE,2001,45,pop
+Big Brovaz,Nu Flow,201480,FALSE,2001,45,pop
+Five,Let's Dance - Radio Edit,218626,FALSE,2001,47,pop
+Janet Jackson,Doesn't Really Matter,265026,FALSE,2001,47,"pop, R&B"
+Robbie Williams,Eternity,302760,FALSE,2001,48,"pop, rock"
+Missy Elliott,4 My People (feat. Eve),289373,TRUE,2001,49,"hip hop, pop, R&B"
+*NSYNC,Girlfriend,253600,FALSE,2001,50,pop
+Fragma,Everytime You Need Me - Radio Version,213346,FALSE,2001,50,"pop, Dance/Electronic"
+Outkast,The Whole World (feat. Killer Mike),295346,TRUE,2001,51,"hip hop, pop"
+So Solid Crew,21 Seconds,302826,TRUE,2001,51,Dance/Electronic
+Alicia Keys,A Woman's Worth,303333,FALSE,2001,52,"pop, R&B"
+A1,Caught in the Middle,206466,FALSE,2001,53,pop
+Faith Evans,I Love You,267160,FALSE,2001,53,"hip hop, pop, R&B"
+DJ Pied Piper & The Masters Of Ceremonies,Do You Really Like It? - Radio Edit,217120,FALSE,2001,54,Dance/Electronic
+Emma Bunton,What Took You So Long?,241000,FALSE,2001,54,pop
+Rui Da Silva,Touch Me (Radio Edit) [feat. Cassandra],213133,FALSE,2001,54,Dance/Electronic
+Busta Rhymes,Pass The Courvoisier Part II (feat. P. Diddy & Pharrell) - Remix,238600,TRUE,2001,55,"hip hop, pop"
+Case,Missing You,284666,FALSE,2001,55,"hip hop, pop, R&B"
+Kylie Minogue,Love at First Sight,238266,FALSE,2001,55,"pop, Dance/Electronic"
+Enrique Iglesias,Escape,208626,FALSE,2001,56,"pop, latin"
+Sunshine Anderson,Heard It All Before,295826,FALSE,2001,56,"pop, R&B"
+112,It's Over Now,264933,FALSE,2001,57,"hip hop, pop, R&B"
+2Pac,Until The End Of Time,266506,TRUE,2001,57,hip hop
+Erick Sermon,Music (feat. Marvin Gaye),223133,TRUE,2001,57,"hip hop, pop"
+Jennifer Lopez,Play,211493,TRUE,2001,57,"hip hop, pop, R&B"
+Missy Elliott,One Minute Man (feat. Ludacris),252986,TRUE,2001,57,"hip hop, pop, R&B"
+Atomic Kitten,Eternal Flame - Single Version,195506,FALSE,2001,58,pop
+Blue,If You Come Back,207560,FALSE,2001,58,pop
+Britney Spears,"I'm Not a Girl, Not Yet a Woman",231066,FALSE,2001,58,pop
+Céline Dion,A New Day Has Come - Radio Remix,259773,FALSE,2001,59,pop
+J-Kwon,Tipsy - Club Mix,247106,TRUE,2001,59,"hip hop, pop"
+Trick Daddy,I'm a Thug,254400,TRUE,2001,59,"hip hop, pop"
+Usher,U Don't Have to Call,269400,TRUE,2001,59,"hip hop, pop, R&B"
+Christina Milian,AM To PM,231213,FALSE,2001,60,"hip hop, pop, R&B"
+Christina Milian,When You Look At Me - Radio Edit,222546,FALSE,2001,60,"hip hop, pop, R&B"
+Faith Hill,There You'll Be,222120,FALSE,2001,60,"pop, country"
+Gabrielle,Rise,219093,FALSE,2001,60,"pop, R&B"
+Gabrielle,Rise,219093,FALSE,2001,60,"pop, R&B"
+Ludacris,Rollout (My Business),296586,TRUE,2001,60,"hip hop, pop"
+Michelle Branch,All You Wanted,217680,FALSE,2001,60,"pop, Folk/Acoustic"
+P!nk,Don't Let Me Get Me - Radio Edit,210693,FALSE,2001,60,pop
+S Club 7,Have You Ever,201533,FALSE,2001,60,pop
+Britney Spears,Overprotected - Radio Edit,198600,FALSE,2001,61,pop
+LeAnn Rimes,I Need You,229826,FALSE,2001,61,"pop, country"
+Mary J. Blige,No More Drama,326240,FALSE,2001,61,"pop, R&B"
+The Supermen Lovers,Starlight - Radio Edit,234400,FALSE,2001,61,Dance/Electronic
+Geri Halliwell,It's Raining Men,254640,FALSE,2001,62,pop
+Kylie Minogue,In Your Eyes,197826,FALSE,2001,62,"pop, Dance/Electronic"
+112,Peaches & Cream,193093,FALSE,2001,63,"hip hop, pop, R&B"
+Blue,All Rise,223546,FALSE,2001,63,pop
+JAY-Z,Izzo (H.O.V.A.),240626,TRUE,2001,63,hip hop
+S Club 7,Don't Stop Movin',233626,FALSE,2001,63,pop
+Destiny's Child,Bootylicious,207906,FALSE,2001,64,"pop, R&B"
+Ja Rule,Livin' It Up,257066,FALSE,2001,64,"hip hop, pop, R&B"
+Michael Jackson,You Rock My World,337733,FALSE,2001,64,"pop, R&B"
+Puddle Of Mudd,Blurry,303920,FALSE,2001,64,"rock, metal"
+Robbie Williams,Somethin' Stupid,170493,FALSE,2001,64,"pop, rock"
+Shakira,Underneath Your Clothes,224066,FALSE,2001,64,"pop, latin"
+Staind,It's Been Awhile,264706,TRUE,2001,64,"rock, metal"
+Destiny's Child,"Independent Women, Pt. 1",221133,FALSE,2001,65,"pop, R&B"
+Destiny's Child,"Independent Women, Pt. 1",221133,FALSE,2001,65,"pop, R&B"
+Gary Jules,Mad World (Feat. Michael Andrews),189506,FALSE,2001,65,pop
+Ginuwine,Differences,265533,FALSE,2001,65,"hip hop, pop, R&B"
+Jamiroquai,Little L,295400,FALSE,2001,65,pop
+Janet Jackson,All For You,329933,FALSE,2001,65,"pop, R&B"
+Lasgo,Something,220973,FALSE,2001,65,pop
+LeAnn Rimes,Can't Fight The Moonlight,215506,FALSE,2001,65,"pop, country"
+Atomic Kitten,Whole Again,185013,FALSE,2001,66,pop
+Jennifer Lopez,I'm Real (feat. Ja Rule) - Murder Remix,262133,TRUE,2001,66,"hip hop, pop, R&B"
+Jagged Edge,Where the Party At (feat. Nelly),232573,FALSE,2001,67,"hip hop, pop, R&B"
+Jennifer Lopez,Love Don't Cost a Thing,221226,FALSE,2001,67,"hip hop, pop, R&B"
+Afroman,Because I Got High,197760,TRUE,2001,68,hip hop
+Christina Aguilera,"Lady Marmalade - From ""Moulin Rouge"" Soundtrack",264893,FALSE,2001,68,pop
+D12,Purple Pills,304506,TRUE,2001,68,"hip hop, pop, rock"
+Missy Elliott,Get Ur Freak On,211120,TRUE,2001,68,"hip hop, pop, R&B"
+P!nk,Get the Party Started,192533,FALSE,2001,68,pop
+Travis,Sing,228800,FALSE,2001,68,"rock, pop"
+Britney Spears,I'm a Slave 4 U,203600,FALSE,2001,69,pop
+Creed,My Sacrifice,294600,FALSE,2001,69,"pop, rock, metal"
+Darude,Sandstorm,225493,FALSE,2001,69,"pop, Dance/Electronic"
+Gabrielle,Out Of Reach,196986,FALSE,2001,69,"pop, R&B"
+P.O.D.,Youth of the Nation,256240,FALSE,2001,69,"rock, metal"
+Destiny's Child,Survivor,254026,FALSE,2001,70,"pop, R&B"
+Puddle Of Mudd,She Hates Me,216760,TRUE,2001,70,"rock, metal"
+Blu Cantrell,Hit 'Em Up Style (Oops!),250706,FALSE,2001,71,"pop, R&B"
+The Calling,Wherever You Will Go,208600,FALSE,2001,72,pop
+Eve,Let Me Blow Ya Mind,230133,TRUE,2001,73,"hip hop, pop, R&B"
+Fat Joe,What's Luv? (feat. Ja-Rule & Ashanti),267093,TRUE,2001,73,"hip hop, pop"
+Ja Rule,Always On Time,245133,TRUE,2001,73,"hip hop, pop, R&B"
+Kylie Minogue,Can't Get You out of My Head,230640,FALSE,2001,73,"pop, Dance/Electronic"
+Gorillaz,Clint Eastwood,340920,TRUE,2001,74,hip hop
+Shakira,"Whenever, Wherever",196160,FALSE,2001,74,"pop, latin"
+Alien Ant Farm,Smooth Criminal,209266,FALSE,2001,75,"rock, metal"
+Daft Punk,One More Time,320357,FALSE,2001,76,"hip hop, Dance/Electronic"
+Mary J. Blige,Family Affair,265866,FALSE,2001,76,"pop, R&B"
+Modjo,Lady - Hear Me Tonight,307153,FALSE,2001,77,Dance/Electronic
+Train,Drops of Jupiter (Tell Me),259933,FALSE,2001,77,pop
+Jimmy Eat World,The Middle,165853,FALSE,2001,78,"rock, pop"
+Nickelback,How You Remind Me,223840,FALSE,2001,78,"rock, metal"
+LL Cool J,Luv U Better,287000,FALSE,2002,2,"hip hop, pop, R&B"
+Aaliyah,Miss You - Main,245240,FALSE,2002,36,"hip hop, pop, R&B"
+Aaliyah,More Than A Woman,230346,FALSE,2002,42,"hip hop, pop, R&B"
+Brandy,What About Us?,253200,FALSE,2002,43,"hip hop, pop, R&B"
+Sugababes,Freak Like Me,195866,FALSE,2002,45,"pop, R&B"
+Daniel Bedingfield,Gotta Get Thru This - D'N'D Radio Edit,162333,FALSE,2002,46,pop
+Charli Baltimore,Down 4 U,318213,TRUE,2002,47,pop
+Lil Jon & The East Side Boyz,Get Low,324600,FALSE,2002,47,"hip hop, pop"
+Dirty Vegas,Days Go By,432146,FALSE,2002,48,Dance/Electronic
+B2K,Uh Huh,223293,FALSE,2002,49,"hip hop, pop, R&B"
+Brandy,Another Day in Paradise - R&B-Version,271626,FALSE,2002,50,"hip hop, pop, R&B"
+Brandy,Full Moon,248933,FALSE,2002,52,"hip hop, pop, R&B"
+Aaliyah,Try Again,284000,FALSE,2002,53,"hip hop, pop, R&B"
+Jennifer Lopez,I'm Gonna Be Alright (feat. Nas),172240,FALSE,2002,53,"hip hop, pop, R&B"
+Holly Valance,Kiss Kiss,204400,FALSE,2002,54,"pop, Dance/Electronic"
+Kelly Rowland,Stole,249293,FALSE,2002,54,"hip hop, pop, R&B"
+Ashanti,Baby,265706,TRUE,2002,55,"hip hop, pop, R&B"
+Jaheim,Put That Woman First,245773,TRUE,2002,55,"pop, R&B"
+Daniel Bedingfield,Gotta Get Thru This - D'N'D Radio Edit,161240,FALSE,2002,56,pop
+JAY-Z,Excuse Me Miss,281240,TRUE,2002,56,hip hop
+The Goo Goo Dolls,Here Is Gone,238173,FALSE,2002,56,"pop, rock"
+Alanis Morissette,Hands Clean,269400,FALSE,2002,57,"pop, Folk/Acoustic"
+Floetry,Say Yes,268373,FALSE,2002,57,"hip hop, pop, R&B"
+Missy Elliott,Gossip Folks (feat. Ludacris),234893,TRUE,2002,57,"hip hop, pop, R&B"
+Daniel Bedingfield,If You're Not The One,257026,FALSE,2002,58,pop
+Daniel Bedingfield,If You're Not The One,257026,FALSE,2002,58,pop
+Eve,Gangsta Lovin',239266,TRUE,2002,58,"hip hop, pop, R&B"
+Musiq Soulchild,Halfcrazy,254493,FALSE,2002,58,"pop, R&B"
+N.O.R.E.,Nothin',264653,TRUE,2002,58,"hip hop, pop"
+Nas,I Can,253720,FALSE,2002,58,hip hop
+Truth Hurts,Addictive,226440,TRUE,2002,58,"pop, R&B"
+Craig David,Rise & Fall (feat. Sting),287226,FALSE,2002,59,"hip hop, pop, R&B"
+Disturbing Tha Peace,Move Bitch,272293,TRUE,2002,59,"hip hop, pop"
+Sean Paul,Gimme the Light,228000,TRUE,2002,59,"hip hop, pop"
+Sugababes,Round Round,236426,FALSE,2002,59,"pop, R&B"
+Blue,One Love,207186,FALSE,2002,60,pop
+Elvis Presley,A Little Less Conversation - JXL Radio Edit Remix,211506,FALSE,2002,60,"rock, easy listening"
+Jennifer Lopez,All I Have (feat. LL Cool J),254466,FALSE,2002,60,"hip hop, pop, R&B"
+Ronan Keating,If Tomorrow Never Comes,214306,FALSE,2002,60,"pop, rock"
+Tyrese,How You Gonna Act Like That,294693,FALSE,2002,60,"hip hop, pop, R&B"
+Ashanti,Happy,262226,TRUE,2002,61,"hip hop, pop, R&B"
+Christina Aguilera,Can't Hold Us Down (feat. Lil' Kim),255266,FALSE,2002,61,pop
+Ja Rule,Mesmerize,278693,TRUE,2002,61,"hip hop, pop, R&B"
+Nelly,Air Force Ones,304000,TRUE,2002,61,"hip hop, pop, R&B"
+Sean Paul,Like Glue,232506,FALSE,2002,61,"hip hop, pop"
+Justin Timberlake,Like I Love You,283626,FALSE,2002,62,pop
+Sophie Ellis-Bextor,Murder On The Dancefloor,230013,FALSE,2002,62,"pop, Dance/Electronic"
+DJ Sammy,Heaven,233600,FALSE,2002,63,pop
+Matchbox Twenty,Unwell,228706,FALSE,2002,63,"pop, rock"
+The Roots,The Seed (2.0),267933,TRUE,2002,63,hip hop
+Big Tymers,Still Fly,335613,TRUE,2002,64,"hip hop, pop"
+Tweet,Oops (Oh My) [feat. Missy Elliott],237800,TRUE,2002,64,"hip hop, pop, R&B"
+Atomic Kitten,The Tide Is High - Radio Mix,206093,FALSE,2002,65,pop
+Las Ketchup,The Ketchup Song (Aserejé) - Spanglish Version,213973,FALSE,2002,66,set()
+3 Doors Down,When I'm Gone,260333,FALSE,2002,67,"pop, rock, metal"
+Cam’ron,Oh Boy,204706,TRUE,2002,67,"hip hop, pop"
+Christina Aguilera,Fighter,245960,FALSE,2002,67,pop
+Junior Senior,Move Your Feet,181826,FALSE,2002,67,pop
+Busta Rhymes,I Know What You Want (feat. Flipmode Squad),324306,TRUE,2002,68,"hip hop, pop"
+Busta Rhymes,I Know What You Want (feat. Flipmode Squad),324306,TRUE,2002,68,"hip hop, pop"
+Christina Aguilera,Dirrty (feat. Redman),298853,FALSE,2002,68,pop
+Good Charlotte,Lifestyles of the Rich & Famous,190173,FALSE,2002,68,"rock, metal"
+Sean Paul,I'm Still in Love with You (feat. Sasha),273360,FALSE,2002,68,"hip hop, pop"
+Ashanti,Foolish,227386,TRUE,2002,70,"hip hop, pop, R&B"
+Avril Lavigne,I'm with You,223066,FALSE,2002,70,pop
+Jennifer Lopez,Jenny from the Block (feat. Jadakiss & Styles P.) - Track Masters Remix,187840,FALSE,2002,70,"hip hop, pop, R&B"
+Missy Elliott,Work It,263226,TRUE,2002,70,"hip hop, pop, R&B"
+Missy Elliott,Work It,263226,TRUE,2002,70,"hip hop, pop, R&B"
+Eminem,Cleanin' Out My Closet,297840,TRUE,2002,71,hip hop
+Eminem,Sing For The Moment,339546,TRUE,2002,71,hip hop
+JAY-Z,03' Bonnie & Clyde,205560,TRUE,2002,71,hip hop
+Coldplay,In My Place,226680,FALSE,2002,72,"rock, pop"
+Trapt,Headstrong,285569,TRUE,2002,72,"rock, metal"
+Justin Timberlake,Cry Me a River,288333,FALSE,2002,73,pop
+Red Hot Chili Peppers,By the Way,216933,FALSE,2002,73,rock
+3 Doors Down,Here Without You,238733,FALSE,2002,74,"pop, rock, metal"
+Sean Paul,Get Busy,211666,FALSE,2002,74,"hip hop, pop"
+Audioslave,Like a Stone,293960,FALSE,2002,75,"rock, metal"
+Avril Lavigne,Sk8er Boi,204000,FALSE,2002,75,pop
+Nelly,Hot In Herre,228240,TRUE,2002,75,"hip hop, pop, R&B"
+Vanessa Carlton,A Thousand Miles,237493,FALSE,2002,75,"Folk/Acoustic, pop"
+Justin Timberlake,Rock Your Body,267266,FALSE,2002,76,pop
+Maroon 5,This Love,206200,FALSE,2002,77,pop
+Nelly,Dilemma,289160,TRUE,2002,77,"hip hop, pop, R&B"
+Avril Lavigne,Complicated,244506,FALSE,2002,78,pop
+Coldplay,Clocks,307879,FALSE,2002,79,"rock, pop"
+Coldplay,Clocks,307879,FALSE,2002,79,"rock, pop"
+Red Hot Chili Peppers,Can't Stop,269000,FALSE,2002,80,rock
+Eminem,'Till I Collapse,297786,TRUE,2002,85,hip hop
+Eminem,Without Me,290320,TRUE,2002,87,hip hop
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
