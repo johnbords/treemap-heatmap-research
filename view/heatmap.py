@@ -1,62 +1,50 @@
+import streamlit as st
 import pandas as pd
 import plotly.graph_objs as go
 
-def render_heatmap():
-
-    # Load data
-    df = pd.read_csv("C:\\Users\\Study\\PycharmProjects\\CS490R\\treemap-heatmap-research\\model\\1998-2002.csv")
-
-    # Split genres into separate rows
-    # explode(): splits a single cell containing multiple values (e.g., a list of genres)
-    # into multiple rows, duplicating the rest of the row so each value gets its own row
-    df["genre"] = df["genre"].str.split(", ")
+@st.cache_data(show_spinner=False)
+def load_songs():
+    df = pd.read_csv(r"C:\Users\Study\PycharmProjects\CS490R\treemap-heatmap-research\model\songs_normalize.csv")
+    df["genre"] = df["genre"].astype(str).str.split(",")
     df = df.explode("genre")
+    df["genre"] = df["genre"].astype(str).str.strip()
+    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
+    df = df.dropna(subset=["year"])
+    df["year"] = df["year"].astype(int)
+    return df
 
-    # Aggregate: average popularity per year per genre
-    heatmap_df = (
-        df.groupby(["genre", "year"])["popularity"]
-        .mean()
-        .reset_index()
-    )
+@st.cache_data(show_spinner=False)
+def build_heatmap_matrix(start_year: int, end_year: int, selected_genres_tuple: tuple):
+    df = load_songs()
 
-    # Pivot to matrix form (required for go.Heatmap)
-    heatmap_matrix = heatmap_df.pivot(
-        index="genre",
-        columns="year",
-        values="popularity"
-    )
+    df = df[(df["year"] >= start_year) & (df["year"] <= end_year)]
+    if selected_genres_tuple:
+        df = df[df["genre"].isin(list(selected_genres_tuple))]
 
-    # Create heatmap
-    fig = go.Figure(
-        data=go.Heatmap(
-            x=heatmap_matrix.columns,
-            y=heatmap_matrix.index,
-            z=heatmap_matrix.values,
-            colorscale="Sunset",
-            colorbar=dict(title="Avg Popularity"),
+    heatmap_df = df.groupby(["genre", "year"], as_index=False)["popularity"].mean()
+    heatmap_df["year"] = heatmap_df["year"].astype(str)
 
-            hovertemplate=(
-                "Year: %{x}<br>"
-                "Genre: %{y}<br>"
-                "Avg Popularity: %{z:.1f}"
-                "<extra></extra>"
-            ),
-            hoverongaps=False,
-        )
-    )
+    return heatmap_df.pivot(index="genre", columns="year", values="popularity")
 
-    # Layout
+def render(year_range: tuple, selected_genres: list) -> go.Figure:
+    start_year, end_year = year_range
+    heatmap_matrix = build_heatmap_matrix(start_year, end_year, tuple(selected_genres))
+
+    fig = go.Figure(go.Heatmap(
+        x=heatmap_matrix.columns,
+        y=heatmap_matrix.index,
+        z=heatmap_matrix.values,
+        colorscale="Sunset",
+        colorbar=dict(title="Avg Popularity"),
+        hovertemplate="Year: %{x}<br>Genre: %{y}<br>Avg Popularity: %{z:.1f}<extra></extra>",
+        hoverongaps=False
+    ))
+
     fig.update_layout(
         title="Average Song Popularity by Genre and Year",
         xaxis_title="Year",
         yaxis_title="Genre",
-
-        # Make NaN cells appear white
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        width=1000,
+        height=700
     )
-
-    fig.show()
-
-if __name__ == "__main__":
-    render_heatmap()
+    return fig
