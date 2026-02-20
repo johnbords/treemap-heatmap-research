@@ -17,7 +17,7 @@ TIMER_STYLE = {
     "track_color": "#0e1117",  # background/track color
     "reverse_bar": True,         # True = bar shrinks instead of grows
     "show_bar": True,             # False = hide bar completely
-    "precision": 2,  # number of decimal places for elapsed/remaining
+    "precision": 3,  # number of decimal places for elapsed/remaining
 
     # Positioning (optional)
     "position": "static",         # "static" (default) or "fixed"
