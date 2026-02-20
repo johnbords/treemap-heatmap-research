@@ -8,13 +8,13 @@ import uuid
 # Global styling knobs (edit these in Python only)
 TIMER_STYLE = {
     "font_size": "40px",          # e.g. "2rem", "48px"
-    "font_color": "#31333f",      # any CSS color
+    "font_color": "#6FA8DC",      # any CSS color
     "align": "left",              # "left", "center", "right"
     "seconds_only": False,         # True = show only seconds
 
     # Progress bar settings
-    "bar_color": "#ff4b4b",       # fill color
-    "track_color": "#0e1117",  # background/track color
+    "bar_color": "#6FA8DC",       # fill color
+    "track_color": "#f0f2f6",  # background/track color
     "reverse_bar": True,         # True = bar shrinks instead of grows
     "show_bar": True,             # False = hide bar completely
     "precision": 3,  # number of decimal places for elapsed/remaining

@@ -39,8 +39,15 @@ def render_page():
     st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
     st.subheader("Filters")
-    year_range = year_slider()
-    genres = st.multiselect("Genre", genre_list)
+
+    if ("year_range" in st.session_state) and ("genres" in st.session_state):
+        if st.session_state.year_range is None:
+            st.session_state.year_range = year_slider()
+        if st.session_state.genres is None:
+            st.session_state.genres = st.multiselect("Genre", genre_list)
+    else:
+        st.session_state.year_range = year_slider()
+        st.session_state.genres = st.multiselect("Genre", genre_list)
 
     # ✅ 2-selection radio BETWEEN filters and chart
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
@@ -54,13 +61,15 @@ def render_page():
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     st.subheader(f"Genre Popularity {chart_type}")
 
-    # Render selected chart
-    if chart_type == "Heatmap":
-        fig = heatmap.render(year_range, genres)
-    else:
-        fig = treemap.render(year_range, genres)
+    if ("year_range" in st.session_state) and ("genres" in st.session_state):
+        if (st.session_state.year_range is not None) and (st.session_state.genres is not None):
+            # Render selected chart
+            if chart_type == "Heatmap":
+                fig = heatmap.render(st.session_state.year_range, st.session_state.genres)
+            else:
+                fig = treemap.render(st.session_state.year_range, st.session_state.genres)
 
-    st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
 
 
 if __name__ == "__main__":
