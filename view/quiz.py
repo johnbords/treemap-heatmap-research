@@ -1,7 +1,7 @@
 import streamlit as st
 import uuid
 
-import js_timer_component  # integrates your JS timer component
+from view import js_timer_component  # integrates your JS timer component
 
 # ---------------------------
 # Config
@@ -9,40 +9,72 @@ import js_timer_component  # integrates your JS timer component
 QUIZ_COLOR = "#6FA8DC"
 FADE_SECONDS = 0.5
 TOTAL_QUESTIONS = 10
-QUESTION_SECONDS = 15
+QUESTION_SECONDS = 25
 NO_ANSWER = -1  # stored when timer expires
 
 QUESTIONS = [
-    {"q": "1) What does CPU stand for?",
-     "choices": ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Compute Power Unit"],
-     "correct": 0},
-    {"q": "2) Which data structure is FIFO?",
-     "choices": ["Stack", "Queue", "Tree", "Graph"],
+
+    # =============================
+    # Experimental Object 1 (1998–2002)
+    # =============================
+
+    {"q": "1) In which years is Pop higher than Hip Hop?",
+     "choices": ["1998 and 1999", "2000 and 2002", "2001 and 2002", "Only 2000"],
      "correct": 1},
-    {"q": "3) In Python, what does `len(x)` return?",
-     "choices": ["Last element", "Type of x", "Number of items", "Memory address"],
-     "correct": 2},
-    {"q": "4) Which one is NOT an OOP concept?",
-     "choices": ["Encapsulation", "Inheritance", "Compilation", "Polymorphism"],
-     "correct": 2},
-    {"q": "5) What is the time complexity of binary search?",
-     "choices": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-     "correct": 1},
-    {"q": "6) Which protocol is used for secure browsing?",
-     "choices": ["HTTP", "FTP", "HTTPS", "SMTP"],
-     "correct": 2},
-    {"q": "7) What does RAM stand for?",
-     "choices": ["Random Access Memory", "Read Access Memory", "Run All Memory", "Random Allocation Module"],
+
+    {"q": "2) In 2000, which genre is second highest?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
      "correct": 0},
-    {"q": "8) Which is a relational database?",
-     "choices": ["MongoDB", "Redis", "PostgreSQL", "Neo4j"],
+
+    {"q": "3) In 2002, which genre is the lowest?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
      "correct": 2},
-    {"q": "9) Python single-line comment symbol?",
-     "choices": ["//", "#", "--", "/* */"],
+
+    {"q": "4) From 1999 to 2002, which genre is highest in most years?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
+     "correct": 3},
+
+
+    # =============================
+    # Experimental Object 2 (2003–2007)
+    # =============================
+
+    {"q": "5) In 2007, which genre is second highest?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
      "correct": 1},
-    {"q": "10) What does IP stand for?",
-     "choices": ["Internet Protocol", "Internal Process", "Interface Port", "Internet Path"],
+
+    {"q": "6) From 2003 to 2007, Hip Hop mostly:",
+     "choices": ["Goes up", "Goes down", "Goes up and down", "Stays about the same"],
+     "correct": 1},
+
+    {"q": "7) In which year is Latin most popular?",
+     "choices": ["2003", "2004", "2006", "2007"],
+     "correct": 2},
+
+    {"q": "8) In 2005, which genre is in the middle (not highest and not lowest)?",
+     "choices": ["Pop", "Hip Hop", "R&B"],
      "correct": 0},
+
+
+    # =============================
+    # Experimental Object 3 (2008–2012)
+    # =============================
+
+    {"q": "9) Between 2008 and 2012, in which year is Metal the highest?",
+     "choices": ["2008", "2009", "2010", "2011", "2012"],
+     "correct": 1},
+
+    {"q": "10) In 2010, which genre is the highest?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
+     "correct": 1},
+
+    {"q": "11) Between 2011 and 2012, which genre reaches the highest popularity?",
+     "choices": ["Pop", "Hip Hop", "R&B", "Folk/Acoustic"],
+     "correct": 3},
+
+    {"q": "12) In 2011, which genre is the lowest?",
+     "choices": ["Pop", "Hip Hop", "R&B"],
+     "correct": 2},
 ]
 
 
@@ -76,14 +108,21 @@ def flash_css():
         unsafe_allow_html=True,
     )
 
-
-def compute_score():
-    # Ignore NO_ANSWER entries in scoring
+def sum_correct_answers() -> int:
     return sum(
         1 for i, ans in enumerate(st.session_state.quiz_answers)
-        if ans != NO_ANSWER and QUESTIONS[i]["correct"] == ans
+        # Ignore NO_ANSWER entries in scoring
+        # if ans != NO_ANSWER and QUESTIONS[i]["correct"] == ans
+        if QUESTIONS[i]["correct"] == ans
     )
 
+def sum_wrong_answers() -> int:
+    return sum(
+        1 for i, ans in enumerate(st.session_state.quiz_answers)
+        # Ignore NO_ANSWER entries in scoring
+        # if ans != NO_ANSWER and QUESTIONS[i]["correct"] == ans
+        if ans == NO_ANSWER or QUESTIONS[i]["correct"] != ans
+    )
 
 def reset_quiz():
     st.session_state.quiz_q_idx = 0
@@ -204,7 +243,8 @@ def render_quiz():
             flash_css()
 
             st.success("Quiz finished!")
-            # st.write(f"Score: **{compute_score()} / {TOTAL_QUESTIONS}**")
+            st.write(f"Score: **{sum_correct_answers()} / {TOTAL_QUESTIONS}**")
+            st.write(f"Wrong answers total **{sum_wrong_answers()}**")
 
             c1, c2 = st.columns(2)
             with c1:
