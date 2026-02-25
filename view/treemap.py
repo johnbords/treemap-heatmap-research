@@ -4,32 +4,15 @@ import plotly.graph_objs as go
 
 
 # -----------------------------
-# Shared loader (same as heatmap)
-# -----------------------------
-@st.cache_data(show_spinner=False)
-def load_songs():
-    df = pd.read_csv(
-        r"C:\Users\Study\PycharmProjects\CS490R\treemap-heatmap-research\model\songs_normalize.csv"
-    )
-    df["genre"] = df["genre"].astype(str).str.split(",")
-    df = df.explode("genre")
-    df["genre"] = df["genre"].astype(str).str.strip()
-    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
-    df = df.dropna(subset=["year"])
-    df["year"] = df["year"].astype(int)
-    return df
-
-
-# -----------------------------
 # Treemap builder w/ filters
 # -----------------------------
 @st.cache_data(show_spinner=False)
 def build_treemap_figure(
+    df: pd.DataFrame,
     start_year: int,
     end_year: int,
     selected_genres_tuple: tuple,
 ) -> go.Figure:
-    df = load_songs()
 
     # Filter years
     df = df[(df["year"] >= start_year) & (df["year"] <= end_year)]
@@ -38,7 +21,7 @@ def build_treemap_figure(
     if selected_genres_tuple:
         df = df[df["genre"].isin(list(selected_genres_tuple))]
 
-    # Handle empty result after filters
+    # Handle empty result
     if df.empty:
         fig = go.Figure()
         fig.update_layout(
@@ -48,31 +31,30 @@ def build_treemap_figure(
         )
         return fig
 
+    # Keep stable chronological order ONLY for colors
     years_sorted = sorted(df["year"].unique().tolist())
 
-    # Aggregate mean popularity per (year, genre)
+    # Aggregate mean popularity
     yg = df.groupby(["year", "genre"], as_index=False)["popularity"].mean()
-    yg = yg.sort_values(["year", "genre"], ascending=[True, True])
 
-    # Totals per year must equal sum(children) for branchvalues="total"
-    year_totals = (
-        yg.groupby("year", as_index=False)["popularity"]
-        .sum()
-        .sort_values("year", ascending=True)
-    )
+    # Totals per year
+    year_totals = yg.groupby("year", as_index=False)["popularity"].sum()
+
+    # ---- ORDER BY VALUE (largest → smallest) ----
+    year_totals_layout = year_totals.sort_values("popularity", ascending=False)
 
     labels, parents, values, ids = [], [], [], []
 
-    # Root node
     ROOT_ID = "root"
     root_label = f"All Years ({years_sorted[0]}–{years_sorted[-1]})"
+
     ids.append(ROOT_ID)
     labels.append(root_label)
     parents.append("")
     values.append(float(year_totals["popularity"].sum()))
 
     # Year nodes
-    for _, r in year_totals.iterrows():
+    for _, r in year_totals_layout.iterrows():
         y = int(r["year"])
         y_id = f"year:{y}"
         ids.append(y_id)
@@ -80,17 +62,20 @@ def build_treemap_figure(
         parents.append(ROOT_ID)
         values.append(float(r["popularity"]))
 
-    # Genre nodes
-    for _, r in yg.iterrows():
-        y = int(r["year"])
-        g = str(r["genre"])
-        g_id = f"year:{y}|genre:{g}"
-        ids.append(g_id)
-        labels.append(g)
-        parents.append(f"year:{y}")
-        values.append(float(r["popularity"]))
+    # Genre nodes (largest → smallest within year)
+    for y in year_totals_layout["year"].astype(int).tolist():
+        yg_y = yg[yg["year"] == y].sort_values("popularity", ascending=False)
+        for _, r in yg_y.iterrows():
+            g = str(r["genre"])
+            g_id = f"year:{y}|genre:{g}"
+            ids.append(g_id)
+            labels.append(g)
+            parents.append(f"year:{y}")
+            values.append(float(r["popularity"]))
 
-    # Colors (cycle for arbitrary #years)
+    # -----------------------------
+    # COLORS (UNCHANGED)
+    # -----------------------------
     root_fill_color = "#444444"
 
     year_container_palette = [
@@ -119,6 +104,7 @@ def build_treemap_figure(
         str(y): year_container_palette[i % len(year_container_palette)]
         for i, y in enumerate(years_sorted)
     }
+
     year_to_genre = {
         str(y): genre_palette[i % len(genre_palette)]
         for i, y in enumerate(years_sorted)
@@ -129,10 +115,29 @@ def build_treemap_figure(
         if node_id == ROOT_ID:
             node_colors.append(root_fill_color)
         elif p == ROOT_ID:
-            node_colors.append(year_to_container.get(str(lbl), "rgb(235,235,235)"))
+            node_colors.append(year_to_container.get(str(lbl)))
         else:
             year = p.replace("year:", "")
-            node_colors.append(year_to_genre.get(year, "rgb(230,230,230)"))
+            node_colors.append(year_to_genre.get(year))
+
+    # -----------------------------
+    # IMPROVED VISUAL SEPARATION
+    # -----------------------------
+    line_colors = []
+    line_widths = []
+
+    for node_id, p in zip(ids, parents):
+        if node_id == ROOT_ID:
+            line_colors.append("white")
+            line_widths.append(3)
+        elif p == ROOT_ID:
+            # Year containers
+            line_colors.append("rgba(0,0,0,0.6)")
+            line_widths.append(4)
+        else:
+            # Genre leaves
+            line_colors.append("rgba(255,255,255,0.9)")
+            line_widths.append(1.5)
 
     node_text_colors = []
     for node_id, p in zip(ids, parents):
@@ -151,15 +156,19 @@ def build_treemap_figure(
             values=values,
             branchvalues="total",
             sort=False,
-            tiling=dict(packing="squarify"),
-            marker=dict(colors=node_colors, line=dict(color="white", width=1)),
+            # Padding between tiles
+            tiling=dict(packing="squarify", pad=4),
+            marker=dict(
+                colors=node_colors,
+                line=dict(color=line_colors, width=line_widths),
+            ),
             textfont=dict(color=node_text_colors, size=13),
             hovertemplate="<b>%{label}</b><br>Avg. Popularity: %{value:.1f}<extra></extra>",
         )
     )
 
     fig.update_layout(
-        title="Treemap (Year → Genre) — Years ordered by time",
+        title="Treemap (Year → Genre) — Ordered by value",
         width=1000,
         height=700
     )
@@ -168,9 +177,8 @@ def build_treemap_figure(
 
 
 # -----------------------------
-# Streamlit-facing render()
+# Streamlit render()
 # -----------------------------
-def render(year_range: tuple, selected_genres: list) -> go.Figure:
+def render(df: pd.DataFrame, year_range: tuple, selected_genres: list) -> go.Figure:
     start_year, end_year = year_range
-    fig = build_treemap_figure(start_year, end_year, tuple(selected_genres))
-    return fig
+    return build_treemap_figure(df, start_year, end_year, tuple(selected_genres))
