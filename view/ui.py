@@ -1,20 +1,24 @@
 import streamlit as st
-import heatmap, treemap, fixed_sidebar
-import pandas as pd
-import quiz
+
+from view import fixed_sidebar
+from view import quiz
+import plotly.graph_objs as go
 
 
-def year_slider() -> tuple:
+# -----------------------------
+# Widgets
+# -----------------------------
+def year_slider(on_change_func) -> tuple:
     return st.slider(
         "Year range",
         min_value=1998,
         max_value=2020,
-        value=(1998, 2020),
-        step=1
+        step=1,
+        key="year_range",
+        on_change=on_change_func,
     )
 
-
-def render_page():
+def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
     # ✅ MUST be the first Streamlit call (inside configure_sidebar)
     fixed_sidebar.configure_sidebar(
         page_title="Treemap vs Heatmap",
@@ -23,13 +27,6 @@ def render_page():
         lock=True,
         width_px=500,
     )
-
-    # Load data for genre list
-    df = pd.read_csv(r"C:\Users\Study\PycharmProjects\CS490R\treemap-heatmap-research\model\songs_normalize.csv")
-    genre_col = df["genre"].astype(str).str.split(",")
-    genre_col = genre_col.tolist()
-    genre_list = [genre.strip() for genre_set in genre_col for genre in genre_set]
-    genre_list = sorted(dict.fromkeys(genre_list), key=str.lower)
 
     # Sidebar quiz (stays visible)
     quiz.render_quiz()
@@ -40,14 +37,14 @@ def render_page():
 
     st.subheader("Filters")
 
-    if ("year_range" in st.session_state) and ("genres" in st.session_state):
-        if st.session_state.year_range is None:
-            st.session_state.year_range = year_slider()
-        if st.session_state.genres is None:
-            st.session_state.genres = st.multiselect("Genre", genre_list)
-    else:
-        st.session_state.year_range = year_slider()
-        st.session_state.genres = st.multiselect("Genre", genre_list)
+    year_slider(on_change_func)
+
+    st.multiselect(
+        "Genre",
+        genre_list,
+        key="genres",
+        on_change=on_change_func,
+    )
 
     # ✅ 2-selection radio BETWEEN filters and chart
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
@@ -56,21 +53,14 @@ def render_page():
         options=["Heatmap", "Treemap"],
         horizontal=True,
         key="chart_type_radio",
+        on_change=on_change_func,
     )
 
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     st.subheader(f"Genre Popularity {chart_type}")
 
-    if ("year_range" in st.session_state) and ("genres" in st.session_state):
-        if (st.session_state.year_range is not None) and (st.session_state.genres is not None):
-            # Render selected chart
-            if chart_type == "Heatmap":
-                fig = heatmap.render(st.session_state.year_range, st.session_state.genres)
-            else:
-                fig = treemap.render(st.session_state.year_range, st.session_state.genres)
-
-        st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 
 
-if __name__ == "__main__":
-    render_page()
+# if __name__ == "__main__":
+#     render_page()
