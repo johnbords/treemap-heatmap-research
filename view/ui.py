@@ -1,7 +1,7 @@
 import streamlit as st
 
 from view import fixed_sidebar
-from view import quiz
+from view import quiz, practice_quiz
 import plotly.graph_objs as go
 
 
@@ -71,18 +71,110 @@ def year_selectbox(on_change_func):
     # Keep unified state consistent
     st.session_state.year_range = (from_year, to_year)
 
+import streamlit as st
+
+def genre_checkboxes(
+    genre_list: list,
+    on_change_func=None,
+    columns: int = 2,
+    bordered: bool = True,
+    show_select_controls: bool = True,
+):
+    """
+    Checkbox-based genre selector replacing st.multiselect.
+    """
+
+    # Clean spacing
+    st.markdown("""
+    <style>
+    div[data-testid="stCheckbox"] { margin-bottom: 0.15rem; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Sort case-insensitive
+    genres_sorted = sorted(genre_list, key=lambda s: str(s).lower())
+
+    # Unified state
+    if "genres" not in st.session_state:
+        st.session_state.genres = []
+
+    # Initialize checkbox keys
+    for g in genres_sorted:
+        key = f"genre_{g}"
+        if key not in st.session_state:
+            st.session_state[key] = (g in st.session_state.genres)
+
+    def _sync_and_fire():
+        st.session_state.genres = [
+            g for g in genres_sorted
+            if st.session_state.get(f"genre_{g}", False)
+        ]
+        if on_change_func:
+            on_change_func()
+
+    st.markdown("### Genre")
+
+    host = st.container(border=True) if bordered else st.container()
+    with host:
+
+        # --- Select / Clear buttons ---
+        if show_select_controls:
+            btn_col1, btn_col2, _ = st.columns([1, 1, 10])
+
+            with btn_col1:
+                if st.button("Select All"):
+                    for g in genres_sorted:
+                        st.session_state[f"genre_{g}"] = True
+                    _sync_and_fire()
+
+            with btn_col2:
+                if st.button("Clear All"):
+                    for g in genres_sorted:
+                        st.session_state[f"genre_{g}"] = False
+                    _sync_and_fire()
+
+            st.divider()
+
+        # --- Vertical layout ---
+        total = len(genres_sorted)
+        rows_per_col = (total + columns - 1) // columns
+
+        col_objs = st.columns(columns)
+
+        for col_idx in range(columns):
+            start = col_idx * rows_per_col
+            end = min(start + rows_per_col, total)
+            chunk = genres_sorted[start:end]
+
+            with col_objs[col_idx]:
+                for g in chunk:
+                    st.checkbox(
+                        g,
+                        key=f"genre_{g}",
+                        on_change=_sync_and_fire,
+                    )
+
+    # Keep unified list consistent
+    st.session_state.genres = [
+        g for g in genres_sorted
+        if st.session_state.get(f"genre_{g}", False)
+    ]
+
+    return st.session_state.genres
+
 def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
     # ✅ MUST be the first Streamlit call (inside configure_sidebar)
     fixed_sidebar.configure_sidebar(
         page_title="Treemap vs Heatmap",
         layout="wide",
         expanded=True,
-        lock=True,
+        lock=False,
         width_px=500,
     )
 
     # Sidebar quiz (stays visible)
     quiz.render_quiz()
+    practice_quiz.render_practice_quiz()
 
     # Main page content
     st.title("Treemap vs Heatmap")
@@ -92,11 +184,17 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
 
     year_selectbox(on_change_func)
 
-    st.multiselect(
-        "Genre",
+    # st.multiselect(
+    #     "Genre",
+    #     genre_list,
+    #     key="genres",
+    #     on_change=on_change_func,
+    # )
+
+    selected_genres = genre_checkboxes(
         genre_list,
-        key="genres",
-        on_change=on_change_func,
+        on_change_func,
+        columns=2
     )
 
     # ✅ 2-selection radio BETWEEN filters and chart

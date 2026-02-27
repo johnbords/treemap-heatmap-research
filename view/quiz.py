@@ -24,45 +24,48 @@ RESULTS_DIR = "results"
 # Questions (hardcoded for now)
 # ---------------------------
 QUESTIONS = [
-    {"q": "1) In which years is Pop higher than Hip Hop?",
-     "choices": ["1998 and 1999", "2000 and 2002", "2001 and 2002", "Only 2000"],
-     "correct": 1},
+    # Set 1: Pop, Hip Hop, R&B, and Metal
+    {"q": "1) In which years between 1998 and 2001 was Hip Hop more popular than Pop?",
+     "choices": ["1998 and 2000", "1999 and 2001", "2000 only", "1998 only"],
+     "correct": 1}, # Answer: 1999 and 2001
 
-    {"q": "2) In 2000, which genre is second highest?",
+    {"q": "2) In the year 2000, among Pop, Hip Hop, R&B, and Metal, which genre has the second highest popularity?",
      "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 0},
+     "correct": 0}, # Answer: Pop
 
-    {"q": "3) In 2002, which genre is the lowest?",
+    {"q": "3) In 2000, among Pop, Hip Hop, R&B, and Metal, which genre is the lowest?",
      "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 2},
+     "correct": 2}, # Answer: R&B
 
-    {"q": "4) From 1999 to 2002, which genre is highest in most years?",
-     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 3},
+    {"q": "4) Between 1999 and 2002, in which year is R&B the lowest??",
+     "choices": ["1999", "2000", "2001", "2002"],
+     "correct": 1}, # Answer: 2000
 
-    {"q": "5) In 2007, which genre is second highest?",
-     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 1},
+    # Set 2: Rock, Jazz, Dance/Electronic, and Latin
+    {"q": "5) In 2007, among Rock, Jazz, Dance/Electronic, and Latin, which genre is second highest?",
+     "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
+     "correct": 3}, # Answer: Dance/Electronic
 
-    {"q": "6) From 2003 to 2007, Hip Hop mostly:",
+    {"q": "6) From 2003 to 2006, Rock's popularity:",
      "choices": ["Goes up", "Goes down", "Goes up and down", "Stays about the same"],
-     "correct": 1},
+     "correct": 0}, # Answer: Goes up
 
-    {"q": "7) In which year is Latin most popular?",
+    {"q": "7) Between 2003 and 2007, in which year is Latin most popular?",
      "choices": ["2003", "2004", "2006", "2007"],
-     "correct": 2},
+     "correct": 2}, # Answer: 2006
 
-    {"q": "8) In 2005, which genre is in the middle (not highest and not lowest)?",
-     "choices": ["Pop", "Hip Hop", "R&B"],
-     "correct": 0},
+    {"q": "8) In 2004, among Rock, Jazz, Dance/Electronic, and Latin, which genre is missing?",
+     "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
+     "correct": 1}, # Answer: Jazz
 
-    {"q": "9) Between 2008 and 2012, in which year is Metal the highest?",
+    # Set 3: Country and Folk/Acoustic
+    {"q": "9) Between 2008 and 2012, in which year is the genre 'Country' the lowest?",
      "choices": ["2008", "2009", "2010", "2011", "2012"],
-     "correct": 1},
+     "correct": 4}, # Answer: 2012
 
-    {"q": "10) In 2010, which genre is the highest?",
-     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 1},
+    {"q": "10) From 2008 to 2012, Folk/Acoustic's popularity...",
+     "choices": ["Goes up", "Goes down", "Goes up and down", "Stays about the same"],
+     "correct": 0}, # Answer: Goes up
 ]
 
 TOTAL_QUESTIONS = len(QUESTIONS)
@@ -343,6 +346,10 @@ def _save_and_convert_if_needed():
 # Main render
 # ============================================================
 def render_quiz():
+    st.session_state.setdefault("active_quiz", None)
+
+    if st.session_state.get("active_quiz") == "practice":
+        return
     # ---------------------------
     # State init
     # ---------------------------
@@ -381,6 +388,8 @@ def render_quiz():
         if not st.session_state.quiz_started or st.session_state.quiz_phase == "idle":
             st.info("Click **Start** to begin.")
             if st.button("Start", key="quiz_start", use_container_width=True):
+                st.session_state.active_quiz = "main"
+                st.session_state.practice_mode = False
                 start_get_ready()
             return
 
@@ -439,9 +448,13 @@ def render_quiz():
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("Restart", key="quiz_restart", use_container_width=True):
+                    st.session_state.active_quiz = "main"  # ✅ ADD
+                    st.session_state.practice_mode = False  # ✅ ADD
                     start_get_ready()
             with c2:
                 if st.button("Close", key="quiz_close", use_container_width=True):
+                    st.session_state.active_quiz = None  # ✅ ADD (optional)
+                    st.session_state.practice_mode = False  # ✅ ADD
                     st.session_state.quiz_started = False
                     st.session_state.quiz_phase = "idle"
                     st.rerun()
