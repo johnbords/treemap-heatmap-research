@@ -40,8 +40,19 @@ def _load_state_from_url():
 def _save_state_to_url():
     """
     Push current st.session_state -> URL query params.
+    Compatible with selectbox-based year filter.
     """
-    yr = st.session_state.get("year_range", (1998, 2020))
+
+    # Prefer unified tuple if available
+    if "year_range" in st.session_state:
+        yr = st.session_state.year_range
+    else:
+        # Fallback in case tuple not yet initialized
+        yr = (
+            st.session_state.get("year_from", 1998),
+            st.session_state.get("year_to", 2020),
+        )
+
     st.query_params["year"] = f"{yr[0]},{yr[1]}"
 
     genres = st.session_state.get("genres", [])
