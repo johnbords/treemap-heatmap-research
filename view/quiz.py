@@ -14,7 +14,7 @@ from view import js_timer_component  # your existing JS timer component
 QUIZ_COLOR = "#6FA8DC"
 FADE_SECONDS = 0.5
 
-QUESTION_SECONDS = 15
+QUESTION_SECONDS = 2500
 NO_ANSWER = -1  # stored when timer expires
 
 RESULTS_DIR = "results"
@@ -172,11 +172,9 @@ def convert_csv_to_xlsx(csv_path: str) -> str:
         for row in r:
             ws.append(row)
 
-    # Save to temp then replace (atomic-ish)
     wb.save(tmp_path)
     wb.close()
 
-    # Replace the final xlsx
     os.replace(tmp_path, xlsx_path)
     return xlsx_path
 
@@ -240,8 +238,12 @@ def reset_quiz():
     st.session_state.saved_to_disk = False
     st.session_state.converted_to_xlsx = False
 
+    # input lock (debounce) per question
+    st.session_state.quiz_input_locked = False
+
     # timer state
     st.session_state.quiz_pending_choice = None
+    st.session_state.quiz_pending_choice_for_idx = None
     st.session_state.quiz_q_timer_interrupt_id = ""
     st.session_state.quiz_q_timer_for_idx = None
     st.session_state.quiz_q_timer_key = f"quiz_q_timer_{uuid.uuid4()}"
@@ -276,6 +278,7 @@ def choose(choice_idx: int):
     # hard reset interrupt state when moving forward
     st.session_state.quiz_q_timer_interrupt_id = ""
     st.session_state.quiz_pending_choice = None
+    st.session_state.quiz_pending_choice_for_idx = None
 
 
 def ensure_question_timer_for_current_idx():
@@ -287,6 +290,10 @@ def ensure_question_timer_for_current_idx():
 
         st.session_state.quiz_q_timer_interrupt_id = ""
         st.session_state.quiz_pending_choice = None
+        st.session_state.quiz_pending_choice_for_idx = None
+
+        # NEW: unlock inputs for the new question
+        st.session_state.quiz_input_locked = False
 
         # reset "handled done" guard for this new run_id
         st.session_state.quiz_handled_done_run_id = None
@@ -324,7 +331,6 @@ def _save_and_convert_if_needed():
         st.session_state.converted_to_xlsx = True
         st.session_state.results_xlsx_path = xlsx_path
     except PermissionError:
-        # XLSX is likely open in Excel
         st.session_state.converted_to_xlsx = False
         st.session_state.results_xlsx_path = _results_xlsx_path_from_csv(csv_path)
         st.warning(
@@ -355,7 +361,10 @@ def render_quiz():
     st.session_state.setdefault("saved_to_disk", False)
     st.session_state.setdefault("converted_to_xlsx", False)
 
+    st.session_state.setdefault("quiz_input_locked", False)
+
     st.session_state.setdefault("quiz_pending_choice", None)
+    st.session_state.setdefault("quiz_pending_choice_for_idx", None)
     st.session_state.setdefault("quiz_q_timer_interrupt_id", "")
     st.session_state.setdefault("quiz_q_timer_for_idx", None)
     st.session_state.setdefault("quiz_q_timer_key", f"quiz_q_timer_{uuid.uuid4()}")
@@ -465,11 +474,12 @@ def render_quiz():
         if timer_done and st.session_state.quiz_handled_done_run_id == st.session_state.quiz_q_timer_run_id:
             timer_done = None
 
-        # Interrupted (answer click)
+        # Interrupted (answer click) - guarded to ONLY apply to the same question index
         if (
             timer_done
             and timer_done.get("interrupted") is True
             and st.session_state.quiz_pending_choice is not None
+            and st.session_state.quiz_pending_choice_for_idx == st.session_state.quiz_q_idx
         ):
             st.session_state.quiz_handled_done_run_id = st.session_state.quiz_q_timer_run_id
 
@@ -480,7 +490,11 @@ def render_quiz():
             error = 0 if choice_idx == correct_idx else 1
             _record_trial(elapsed, error)
 
+            # lock inputs (we are leaving this question)
+            st.session_state.quiz_input_locked = True
+
             st.session_state.quiz_pending_choice = None
+            st.session_state.quiz_pending_choice_for_idx = None
             st.session_state.quiz_q_timer_interrupt_id = ""
 
             choose(choice_idx)
@@ -492,6 +506,14 @@ def render_quiz():
 
             elapsed = timer_done.get("elapsed")
             _record_trial(elapsed, 1)
+
+            # lock inputs (we are leaving this question)
+            st.session_state.quiz_input_locked = True
+
+            # CRITICAL: clear late click state to prevent rerun loops / "random freezes"
+            st.session_state.quiz_pending_choice = None
+            st.session_state.quiz_pending_choice_for_idx = None
+            st.session_state.quiz_q_timer_interrupt_id = ""
 
             st.session_state.quiz_answers.append(NO_ANSWER)
             st.session_state.quiz_q_idx += 1
@@ -505,13 +527,25 @@ def render_quiz():
         st.markdown(f"<div class='quiz-q'><b>{q['q']}</b></div>", unsafe_allow_html=True)
         st.caption(f"Question {st.session_state.quiz_q_idx + 1} / {TOTAL_QUESTIONS}")
 
+        # Debounced buttons: disable immediately after first click
         for i, text in enumerate(q["choices"]):
-            if st.button(
+            clicked = st.button(
                 text,
                 key=f"quiz_choice_{st.session_state.quiz_q_idx}_{i}",
                 use_container_width=True,
-            ):
+                disabled=st.session_state.quiz_input_locked,
+            )
+
+            if clicked:
+                # backend debounce (in case UI disable lags)
+                if st.session_state.quiz_input_locked:
+                    continue
+
+                # lock immediately so rapid extra clicks do nothing
+                st.session_state.quiz_input_locked = True
+
                 # interrupt timer so we capture elapsed reliably
                 st.session_state.quiz_pending_choice = i
+                st.session_state.quiz_pending_choice_for_idx = st.session_state.quiz_q_idx
                 st.session_state.quiz_q_timer_interrupt_id = str(uuid.uuid4())
                 st.rerun()
