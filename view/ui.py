@@ -19,9 +19,25 @@ import plotly.graph_objs as go
 #     )
 
 def _sync_and_fire(on_change_func):
-    st.session_state.year_range = (st.session_state.year_from, st.session_state.year_to)
-    if st.session_state.year_from > st.session_state.year_to:
+    override = st.session_state.get("year_filter_override")
+    yf = st.session_state.get("year_from")
+
+    # No selection yet → do nothing (don't poison year_range)
+    if yf is None:
         return
+
+    # Single-year mode: force year_to = year_from
+    if override and override.get("mode") == "single":
+        st.session_state.year_to = yf
+        st.session_state.year_range = (yf, yf)
+    else:
+        yt = st.session_state.get("year_to")
+        if yt is None:
+            return
+        if yf > yt:
+            return
+        st.session_state.year_range = (yf, yt)
+
     if on_change_func:
         on_change_func()
 
@@ -34,19 +50,57 @@ def year_selectbox(on_change_func):
     if "year_range" not in st.session_state:
         st.session_state.year_range = (1998, 2020)
 
-    # Set widget defaults ONLY if they don't exist yet (before widget creation)
-    if "year_from" not in st.session_state:
-        st.session_state.year_from = st.session_state.year_range[0]
-    if "year_to" not in st.session_state:
-        st.session_state.year_to = st.session_state.year_range[1]
+    # -------------------------------------------------
+    # NEW: Year override driven by the quiz question text
+    #   st.session_state.year_filter_override = {"mode":"single","year":2000}
+    #   st.session_state.year_filter_override = {"mode":"range","from":1999,"to":2002}
+    # -------------------------------------------------
+    override = st.session_state.get("year_filter_override")
 
-    # Left-aligned compact layout
+    # If override exists, we only use it to decide UI layout (single vs range).
+    # We DO NOT auto-fill the year(s).
+
+    if "year_from" not in st.session_state:
+        st.session_state.year_from = None
+    if "year_to" not in st.session_state:
+        st.session_state.year_to = None
+
+    # If override is active, force state consistency
+    if override and override.get("mode") == "single":
+        st.session_state.year_to = st.session_state.year_from
+
+    # Layout:
+    # - single-year: show only ONE box (hide the 2nd by not rendering it)
+    # - range: show two boxes with a dash in between
+    if override and override.get("mode") == "single":
+        # left-aligned compact layout (one box)
+        col_from, _ = st.columns([1, 7])
+        with col_from:
+            from_year = st.selectbox(
+                "",
+                options=years,
+                placeholder="Select a year",
+                key="year_from",
+                label_visibility="collapsed",
+                on_change=lambda: _sync_and_fire(on_change_func),
+            )
+
+        if from_year is None:
+            return
+
+        # keep unified state consistent
+        st.session_state.year_to = from_year
+        st.session_state.year_range = (from_year, from_year)
+        return
+
+    # Default range mode
     col_from, col_dash, col_to, _ = st.columns([1, 0.3, 1, 6])
 
     with col_from:
         from_year = st.selectbox(
             "",
-            years,
+            options=years,
+            placeholder="From",
             key="year_from",
             label_visibility="collapsed",
             on_change=lambda: _sync_and_fire(on_change_func),
@@ -58,20 +112,25 @@ def year_selectbox(on_change_func):
     with col_to:
         to_year = st.selectbox(
             "",
-            years,
+            options=years,
+            placeholder="To",
             key="year_to",
             label_visibility="collapsed",
             on_change=lambda: _sync_and_fire(on_change_func),
         )
 
+    if from_year is None or to_year is None:
+        return
+
     if from_year > to_year:
-        st.error("Invalid year range")
+        st.warning("Invalid year range. Try to pick another year")
         st.stop()
 
     # Keep unified state consistent
     st.session_state.year_range = (from_year, to_year)
 
 import streamlit as st
+
 
 def genre_checkboxes(
     genre_list: list,
