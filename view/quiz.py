@@ -65,48 +65,60 @@ def _set_year_override_from_question(question_text: str):
 # Questions (hardcoded for now)
 # ---------------------------
 QUESTIONS = [
-    # Set 1: Pop, Hip Hop, R&B, and Metal
-    {"q": "1) From 1998 to 2001, which years was Hip Hop more popular than Pop?",
-     "choices": ["1998 and 2000", "1999 and 2001", "2000 only", "1998 only"],
-     "correct": 1}, # Answer: 1999 and 2001
 
-    {"q": "2) In the year 2000, among Pop, Hip Hop, R&B, and Metal, which genre has the second highest popularity?",
+    # -------------------------
+    # Set 1
+    # -------------------------
+
+    {"q": "1) In the year 1999, which genre has higher popularity? Hip Hop or Pop?\n\nHip Hop vs Pop (Year 1999)",
+     "choices": ["Hip Hop", "Pop"],
+     "correct": 0},
+
+    {"q": "2) In the year 2000, which genre has the second highest popularity?\n\nPop, Hip Hop, R&B, Metal (Year 2000)",
      "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 0}, # Answer: Pop
+     "correct": 0},
 
-    {"q": "3) In the year 2000, among Pop, Hip Hop, R&B, and Metal, which genre is the lowest?",
+    {"q": "3) In the year 2000, which genre has the lowest popularity?\n\nPop, Hip Hop, R&B, Metal (Year 2000)",
      "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 2}, # Answer: R&B
+     "correct": 2},
 
-    {"q": "4) From 1999 to 2002, in which year is R&B the lowest??",
+    {"q": "4) From 1999 to 2002, in which year does R&B have the lowest popularity value?\n\nR&B (1999–2002)",
      "choices": ["1999", "2000", "2001", "2002"],
-     "correct": 1}, # Answer: 2000
+     "correct": 1},
 
-    # Set 2: Rock, Jazz, Dance/Electronic, and Latin
-    {"q": "5) In the year 2007, among Rock, Jazz, Dance/Electronic, and Latin, which genre is second highest?",
-     "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
-     "correct": 3}, # Answer: Dance/Electronic
+    # -------------------------
+    # Set 2
+    # -------------------------
 
-    {"q": "6) From 2003 to 2006, Rock's popularity:",
-     "choices": ["Goes up", "Goes down", "Goes up and down", "Stays about the same"],
-     "correct": 0}, # Answer: Goes up
+    {
+        "q": "5) In the year 2007, which genre has the second highest popularity?\n\nRock, Jazz, Dance-Electronic, Latin (Year 2007)",
+        "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
+        "correct": 3},
 
-    {"q": "7) From 2003 to 2007, in which year is Latin most popular?",
+    {"q": "6) In the year 2006, what is the popularity value of Rock?\n\nRock (Year 2006)",
+     "choices": ["45", "52", "60", "68"],
+     "correct": 2},  # Fill after confirming dataset
+
+    {"q": "7) From 2003 to 2007, in which year does Latin have the highest popularity value?\n\nLatin (2003–2007)",
      "choices": ["2003", "2004", "2006", "2007"],
-     "correct": 2}, # Answer: 2006
+     "correct": 2},
 
-    {"q": "8) In the year 2004, among Rock, Jazz, Dance/Electronic, and Latin, which genre is missing?",
+    {"q": "8) In the year 2004, which genre does not appear?\n\nRock, Jazz, Dance/Electronic, Latin (Year 2004)",
      "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
-     "correct": 1}, # Answer: Jazz
+     "correct": 1},
 
-    # Set 3: Country and Folk/Acoustic
-    {"q": "9) From 2008 to 2012, in which year is the genre 'Country' the lowest?",
-     "choices": ["2008", "2009", "2010", "2011", "2012"],
-     "correct": 4}, # Answer: 2012
+    # -------------------------
+    # Set 3
+    # -------------------------
 
-    {"q": "10) From 2008 to 2012, Folk/Acoustic's popularity...",
-     "choices": ["Goes up", "Goes down", "Goes up and down", "Stays about the same"],
-     "correct": 0}, # Answer: Goes up
+    {
+        "q": "9) From 2008 to 2012, in which year does Country have the lowest popularity value?\n\nCountry (2008–2012)",
+        "choices": ["2008", "2009", "2010", "2011", "2012"],
+        "correct": 4},
+
+    {"q": "10) In the year 2012, what is the popularity value of Folk/Acoustic?\n\nFolk/Acoustic (Year 2012)",
+     "choices": ["35", "42", "50", "58"],
+     "correct": 3}  # Fill after confirming dataset
 ]
 
 TOTAL_QUESTIONS = len(QUESTIONS)
@@ -581,9 +593,25 @@ def render_quiz():
         flash_css()
 
         q = QUESTIONS[st.session_state.quiz_q_idx]
-        _set_year_override_from_question(q.get('q',''))
-        st.markdown(f"<div class='quiz-q'><b>{q['q']}</b></div>", unsafe_allow_html=True)
-        st.caption(f"Question {st.session_state.quiz_q_idx + 1} / {TOTAL_QUESTIONS}")
+        q_text = q['q'].split("\n\n")
+        main = q_text[0]
+        focus = q_text[1] if len(q_text) > 1 else ""
+
+        _set_year_override_from_question(main)  # <-- parse ONLY the first line
+
+        st.markdown(
+            f"""
+            <div class='quiz-q'>
+                <b>{main}</b>
+                <br><br>
+                <div style='text-align:center; font-weight:bold; font-size:18px;'>
+                    {focus}
+                </div>
+                <br>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         # Debounced buttons: disable immediately after first click
         for i, text in enumerate(q["choices"]):
