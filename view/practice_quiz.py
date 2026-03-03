@@ -34,6 +34,7 @@ def render_practice_quiz():
     st.session_state.setdefault("practice_q_idx", 0)
     st.session_state.setdefault("practice_answers", [])
     st.session_state.setdefault("active_quiz", None)
+    st.session_state.setdefault("xlsx_open", False)
 
     with st.sidebar:
 

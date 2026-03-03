@@ -31,14 +31,13 @@ def _load_state_from_url():
         st.session_state.year_to = y2
 
     # genres (JSON list in URL)
-    if "genres" not in st.session_state:
-        if "genres" in qp and qp["genres"]:
-            try:
-                st.session_state.genres = json.loads(str(qp["genres"]))
-            except Exception:
-                st.session_state.genres = []
-        else:
+    if "genres" in qp:
+        try:
+            st.session_state.genres = json.loads(str(qp["genres"]))
+        except Exception:
             st.session_state.genres = []
+    else:
+        st.session_state.genres = []
 
     # (optional) chart type
     if "chart_type_radio" not in st.session_state:

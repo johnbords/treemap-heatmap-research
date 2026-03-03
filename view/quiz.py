@@ -1,12 +1,40 @@
 import os
+import sys
 import uuid
 import csv
 import re
+import time
 from typing import List, Optional
 
 import streamlit as st
+from streamlit_scroll_to_top import scroll_to_here
 
 from view import js_timer_component  # your existing JS timer component
+# ---------------------------
+# File path helper (PyInstaller-safe)
+# Writes/reads results beside the packaged .exe (or beside this file when running as scripts).
+# ---------------------------
+class FilePathConfig:
+
+    @staticmethod
+    def _set_file_path(strip_count) -> str:
+        # Check if running as PyInstaller bundle
+        if getattr(sys, 'frozen', False):
+            # When bundled with PyInstaller, sys._MEIPASS is the temp folder
+            stripped_file_path = os.path.dirname(sys.executable)
+            return stripped_file_path
+        else:  # If running as a python script
+            stripped_file_path = os.path.dirname(os.path.abspath(__file__))
+            # Strips folder level incrementally
+            for i in range(0, strip_count):
+                stripped_file_path = os.path.dirname(stripped_file_path)
+            return stripped_file_path
+
+    @staticmethod
+    def generate_complete_file_path(folder_name="", file_name="", strip_count=0) -> str:
+        file_path = FilePathConfig._set_file_path(strip_count)
+        return os.path.join(file_path, folder_name, file_name)
+
 
 
 # ---------------------------
@@ -15,12 +43,8 @@ from view import js_timer_component  # your existing JS timer component
 QUIZ_COLOR = "#6FA8DC"
 FADE_SECONDS = 0.5
 
-QUESTION_SECONDS = 2500
-NO_ANSWER = -1  # stored when timer expires
 
-RESULTS_DIR = "results"
-
-# ---------------------------
+RESULTS_DIR = FilePathConfig.generate_complete_file_path(folder_name="results", strip_count=0)# ---------------------------
 # Year filter override (driven by question text)
 # Convention (recommended):
 #   Single year: "In the year XXXX, ..."
@@ -72,53 +96,53 @@ QUESTIONS = [
 
     {"q": "1) In the year 1999, which genre has higher popularity? Hip Hop or Pop?\n\nHip Hop vs Pop (Year 1999)",
      "choices": ["Hip Hop", "Pop"],
-     "correct": 0},
+     "correct": 0}, # Answer: Hip Hop
 
-    {"q": "2) In the year 2000, which genre has the second highest popularity?\n\nPop, Hip Hop, R&B, Metal (Year 2000)",
-     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 0},
+    {"q": "2) In the year 2000, which genre, from the list below, has the second highest popularity?\n\nHip Hop, Metal, Pop, R&B (Year 2000)",
+     "choices": ["Hip Hop", "Metal", "Pop", "R&B"],
+     "correct": 2}, # Answer: Pop
 
-    {"q": "3) In the year 2000, which genre has the lowest popularity?\n\nPop, Hip Hop, R&B, Metal (Year 2000)",
-     "choices": ["Pop", "Hip Hop", "R&B", "Metal"],
-     "correct": 2},
+    {"q": "3) In the year 2000, which genre, from the list below, has the lowest popularity?\n\nHip Hop, Metal, Pop, R&B (Year 2000)",
+     "choices": ["Hip Hop", "Metal", "Pop", "R&B"],
+     "correct": 3}, # Answer: R&B
 
-    {"q": "4) From 1999 to 2002, in which year does R&B have the lowest popularity value?\n\nR&B (1999–2002)",
+    {"q": "4) From 1999 to 2002, in which year does R&B have the lowest average popularity value?\n\nR&B (1999–2002)",
      "choices": ["1999", "2000", "2001", "2002"],
-     "correct": 1},
+     "correct": 1}, # Answer: 2000
 
     # -------------------------
     # Set 2
     # -------------------------
 
     {
-        "q": "5) In the year 2007, which genre has the second highest popularity?\n\nRock, Jazz, Dance-Electronic, Latin (Year 2007)",
-        "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
-        "correct": 3},
+        "q": "5) In the year 2007, which genre, from the list below, has the second highest popularity?\n\nDance-Electronic, Jazz, Latin, Rock (Year 2007)",
+        "choices": ["Dance/Electronic", "Jazz", "Latin", "Rock"],
+        "correct": 0}, # Answer: Dance/Electronic
 
-    {"q": "6) In the year 2006, what is the popularity value of Rock?\n\nRock (Year 2006)",
-     "choices": ["45", "52", "60", "68"],
-     "correct": 2},  # Fill after confirming dataset
+    {"q": "6) In the year 2006, what is the average popularity value of Rock?\n\nRock (Year 2006)",
+     "choices": ["45.6", "42.0", "67.9", "68.1"],
+     "correct": 2}, # Answer: 67.9
 
-    {"q": "7) From 2003 to 2007, in which year does Latin have the highest popularity value?\n\nLatin (2003–2007)",
-     "choices": ["2003", "2004", "2006", "2007"],
-     "correct": 2},
+    {"q": "7) From 2003 to 2007, in which year does Latin have the highest average popularity value?\n\nLatin (2003–2007)",
+     "choices": ["2003", "2004", "2005", "2006", "2007"],
+     "correct": 3}, # Answer: 2006
 
-    {"q": "8) In the year 2004, which genre does not appear?\n\nRock, Jazz, Dance/Electronic, Latin (Year 2004)",
-     "choices": ["Latin", "Jazz", "Rock", "Dance/Electronic"],
-     "correct": 1},
+    {"q": "8) In the year 2004, which genre, from the list below, is missing?\n\nDance-Electronic, Jazz, Latin, Rock (Year 2004)",
+     "choices": ["Dance/Electronic", "Jazz", "Latin", "Rock"],
+     "correct": 1}, # Answer: Jazz
 
     # -------------------------
     # Set 3
     # -------------------------
 
     {
-        "q": "9) From 2008 to 2012, in which year does Country have the lowest popularity value?\n\nCountry (2008–2012)",
+        "q": "9) From 2008 to 2012, in which year does the genre 'Country' have the lowest average popularity value?\n\nCountry (2008–2012)",
         "choices": ["2008", "2009", "2010", "2011", "2012"],
-        "correct": 4},
+        "correct": 4}, # Answer: 2012
 
-    {"q": "10) In the year 2012, what is the popularity value of Folk/Acoustic?\n\nFolk/Acoustic (Year 2012)",
-     "choices": ["35", "42", "50", "58"],
-     "correct": 3}  # Fill after confirming dataset
+    {"q": "10) In the year 2012, what is the average popularity value of the genre 'Folk/Acoustic?'\n\nFolk/Acoustic (Year 2012)",
+     "choices": ["75.5", "76.9", "77.1", "79.0"],
+     "correct": 3}  # Answer: 79.0
 ]
 
 TOTAL_QUESTIONS = len(QUESTIONS)
@@ -204,6 +228,50 @@ def append_participant_result_csv(
         w = csv.writer(f)
         w.writerow(row)
 
+def is_workbook_open_or_locked(path: str) -> bool:
+    """
+    Returns True if the target XLSX is likely open/locked (Excel commonly locks files on Windows).
+    Cross-platform best-effort:
+      - Windows: try opening + exclusive byte-range lock via msvcrt
+      - Unix: try flock exclusive non-blocking
+    """
+    if not path or not os.path.exists(path):
+        return False
+
+    try:
+        # If the OS denies opening for write at all, it's locked.
+        f = open(path, "a")
+    except PermissionError:
+        return True
+    except Exception:
+        # Unknown edge case; assume not locked to avoid false positives.
+        return False
+
+    try:
+        if os.name == "nt":
+            import msvcrt
+            try:
+                # lock 1 byte non-blocking
+                msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+                return False
+            except OSError:
+                return True
+        else:
+            import fcntl
+            try:
+                fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+                return False
+            except BlockingIOError:
+                return True
+            except OSError:
+                return True
+    finally:
+        try:
+            f.close()
+        except Exception:
+            pass
 
 # ============================================================
 # CSV -> XLSX conversion (after EACH participant run)
@@ -268,16 +336,18 @@ def flash_css():
 
 
 def sum_correct_answers() -> int:
+    """Number of correct answers among answers actually given."""
     return sum(
         1 for i, ans in enumerate(st.session_state.quiz_answers)
-        if ans != NO_ANSWER and QUESTIONS[i]["correct"] == ans
+        if QUESTIONS[i]["correct"] == ans
     )
 
 
 def sum_wrong_answers() -> int:
+    """Number of wrong answers among answers actually given."""
     return sum(
         1 for i, ans in enumerate(st.session_state.quiz_answers)
-        if ans == NO_ANSWER or QUESTIONS[i]["correct"] != ans
+        if QUESTIONS[i]["correct"] != ans
     )
 
 
@@ -298,14 +368,7 @@ def reset_quiz():
     st.session_state.quiz_input_locked = False
 
     # timer state
-    st.session_state.quiz_pending_choice = None
-    st.session_state.quiz_pending_choice_for_idx = None
-    st.session_state.quiz_q_timer_interrupt_id = ""
-    st.session_state.quiz_q_timer_for_idx = None
-    st.session_state.quiz_q_timer_key = f"quiz_q_timer_{uuid.uuid4()}"
-    st.session_state.quiz_q_timer_run_id = str(uuid.uuid4())
 
-    # critical: process timer_done only once per run_id
     st.session_state.quiz_handled_done_run_id = None
 
 
@@ -327,32 +390,24 @@ def start_get_ready():
 
 
 def choose(choice_idx: int):
+    # Record answer and advance. Timing is handled outside (on click).
     st.session_state.quiz_answers.append(choice_idx)
     st.session_state.quiz_q_idx += 1
     st.session_state.quiz_flash_id += 1
 
-    # hard reset interrupt state when moving forward
-    st.session_state.quiz_q_timer_interrupt_id = ""
-    st.session_state.quiz_pending_choice = None
-    st.session_state.quiz_pending_choice_for_idx = None
+    # Mark that the next question needs a fresh start timestamp
+    st.session_state.quiz_q_start_for_idx = None
 
 
-def ensure_question_timer_for_current_idx():
+def ensure_question_state_for_current_idx():
+    """Initialize per-question state once when quiz_q_idx changes."""
     cur = st.session_state.quiz_q_idx
-    if st.session_state.quiz_q_timer_for_idx != cur:
-        st.session_state.quiz_q_timer_for_idx = cur
-        st.session_state.quiz_q_timer_key = f"quiz_q_timer_{uuid.uuid4()}"
-        st.session_state.quiz_q_timer_run_id = str(uuid.uuid4())
+    if st.session_state.get("quiz_q_start_for_idx") != cur:
+        st.session_state.quiz_q_start_for_idx = cur
+        st.session_state.quiz_q_start_ts = time.time()
 
-        st.session_state.quiz_q_timer_interrupt_id = ""
-        st.session_state.quiz_pending_choice = None
-        st.session_state.quiz_pending_choice_for_idx = None
-
-        # NEW: unlock inputs for the new question
+        # unlock inputs for the new question
         st.session_state.quiz_input_locked = False
-
-        # reset "handled done" guard for this new run_id
-        st.session_state.quiz_handled_done_run_id = None
 
 
 def _record_trial(elapsed: Optional[float], error: int) -> None:
@@ -382,18 +437,85 @@ def _save_and_convert_if_needed():
     )
 
     # 2) Convert CSV -> XLSX (after each participant)
+    xlsx_path = _results_xlsx_path_from_csv(csv_path)
+
+    # ✅ NEW: proactively detect Excel lock/open workbook
+    if is_workbook_open_or_locked(xlsx_path):
+        st.session_state.converted_to_xlsx = False
+        st.session_state.results_xlsx_path = xlsx_path
+        st.session_state.xlsx_open = True
+        st.warning(
+            "Saved to CSV, but the XLSX looks OPEN/LOCKED (probably open in Excel).\n"
+            "Close the XLSX file, then the next participant will update it."
+        )
+        return
+
     try:
         xlsx_path = convert_csv_to_xlsx(csv_path)
         st.session_state.converted_to_xlsx = True
         st.session_state.results_xlsx_path = xlsx_path
+        st.session_state.xlsx_open = False
     except PermissionError:
         st.session_state.converted_to_xlsx = False
-        st.session_state.results_xlsx_path = _results_xlsx_path_from_csv(csv_path)
+        st.session_state.results_xlsx_path = xlsx_path
+        st.session_state.xlsx_open = True
         st.warning(
             "Saved to CSV, but could not update the XLSX because it is likely open in Excel.\n"
             "Close the XLSX file, then the next participant will update it."
         )
 
+def _is_file_locked(path: str) -> bool:
+    """
+    Best-effort lock check:
+    - Windows: tries a non-blocking 1-byte lock via msvcrt
+    - Unix: tries flock non-blocking
+    Returns True if the file exists and appears locked/open (e.g., open in Excel).
+    """
+    if not path or not os.path.exists(path):
+        return False
+
+    try:
+        f = open(path, "a")
+    except PermissionError:
+        return True
+    except Exception:
+        return False
+
+    try:
+        if os.name == "nt":
+            import msvcrt
+            try:
+                msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+                return False
+            except OSError:
+                return True
+        else:
+            import fcntl
+            try:
+                fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+                return False
+            except (BlockingIOError, OSError):
+                return True
+    finally:
+        try:
+            f.close()
+        except Exception:
+            pass
+
+def _check_results_files_unlocked_or_warn() -> bool:
+    csv_path = _results_csv_path()
+    xlsx_path = _results_xlsx_path_from_csv(csv_path)
+
+    if _is_file_locked(csv_path) or _is_file_locked(xlsx_path):
+        st.warning(
+            "⚠️ Your results file is currently OPEN (CSV/XLSX).\n\n"
+            "Please close it first, then reload the page (F5) before starting."
+        )
+        return False
+
+    return True
 
 # ============================================================
 # Main render
@@ -422,17 +544,18 @@ def render_quiz():
     st.session_state.setdefault("converted_to_xlsx", False)
 
     st.session_state.setdefault("quiz_input_locked", False)
-
-    st.session_state.setdefault("quiz_pending_choice", None)
-    st.session_state.setdefault("quiz_pending_choice_for_idx", None)
-    st.session_state.setdefault("quiz_q_timer_interrupt_id", "")
-    st.session_state.setdefault("quiz_q_timer_for_idx", None)
-    st.session_state.setdefault("quiz_q_timer_key", f"quiz_q_timer_{uuid.uuid4()}")
-    st.session_state.setdefault("quiz_q_timer_run_id", str(uuid.uuid4()))
-    st.session_state.setdefault("quiz_handled_done_run_id", None)
+    st.session_state.setdefault("quiz_scroll_ticks", 0)
+    st.session_state.setdefault("quiz_q_start_ts", None)
+    st.session_state.setdefault("quiz_q_start_for_idx", None)
 
     st.session_state.setdefault("results_csv_path", None)
     st.session_state.setdefault("results_xlsx_path", None)
+
+    # --- Autoscroll to top (render for 2 reruns for reliability) ---
+    if st.session_state.get("quiz_scroll_ticks", 0) > 0:
+        scroll_to_here(0, key=f"quiz_scroll_{uuid.uuid4()}")
+        st.session_state.quiz_scroll_ticks -= 1
+
 
     with st.sidebar:
         st.header("Quiz")
@@ -442,6 +565,10 @@ def render_quiz():
             _clear_year_override()
             st.info("Click **Start** to begin.")
             if st.button("Start", key="quiz_start", use_container_width=True):
+                # ✅ Check locks BEFORE starting / creating files / assigning participant id
+                if not _check_results_files_unlocked_or_warn():
+                    st.stop()
+
                 st.session_state.active_quiz = "main"
                 st.session_state.practice_mode = False
                 start_get_ready()
@@ -516,78 +643,8 @@ def render_quiz():
                     st.rerun()
             return
 
-        # Question timer
-        ensure_question_timer_for_current_idx()
-
-        q_timer_style = dict(js_timer_component.TIMER_STYLE)
-        q_timer_style["show_bar"] = True
-        q_timer_style["seconds_only"] = True
-        q_timer_style["align"] = "left"
-
-        timer_result, _ = js_timer_component.countdown(
-            QUESTION_SECONDS,
-            key=st.session_state.quiz_q_timer_key,
-            run_id=st.session_state.quiz_q_timer_run_id,
-            interrupt_id=st.session_state.quiz_q_timer_interrupt_id,
-            interrupt_mode="stop",
-            style=q_timer_style,
-        )
-
-        timer_done = (timer_result or {}).get("done")
-
-        # Fix #1: ignore stale events
-        if timer_done and timer_done.get("run_id") != st.session_state.quiz_q_timer_run_id:
-            timer_done = None
-
-        # Fix #2: process done only once per run_id
-        if timer_done and st.session_state.quiz_handled_done_run_id == st.session_state.quiz_q_timer_run_id:
-            timer_done = None
-
-        # Interrupted (answer click) - guarded to ONLY apply to the same question index
-        if (
-            timer_done
-            and timer_done.get("interrupted") is True
-            and st.session_state.quiz_pending_choice is not None
-            and st.session_state.quiz_pending_choice_for_idx == st.session_state.quiz_q_idx
-        ):
-            st.session_state.quiz_handled_done_run_id = st.session_state.quiz_q_timer_run_id
-
-            choice_idx = st.session_state.quiz_pending_choice
-            elapsed = timer_done.get("elapsed")
-
-            correct_idx = QUESTIONS[st.session_state.quiz_q_idx]["correct"]
-            error = 0 if choice_idx == correct_idx else 1
-            _record_trial(elapsed, error)
-
-            # lock inputs (we are leaving this question)
-            st.session_state.quiz_input_locked = True
-
-            st.session_state.quiz_pending_choice = None
-            st.session_state.quiz_pending_choice_for_idx = None
-            st.session_state.quiz_q_timer_interrupt_id = ""
-
-            choose(choice_idx)
-            st.rerun()
-
-        # Timeout
-        if timer_done and timer_done.get("finished") is True:
-            st.session_state.quiz_handled_done_run_id = st.session_state.quiz_q_timer_run_id
-
-            elapsed = timer_done.get("elapsed")
-            _record_trial(elapsed, 1)
-
-            # lock inputs (we are leaving this question)
-            st.session_state.quiz_input_locked = True
-
-            # CRITICAL: clear late click state to prevent rerun loops / "random freezes"
-            st.session_state.quiz_pending_choice = None
-            st.session_state.quiz_pending_choice_for_idx = None
-            st.session_state.quiz_q_timer_interrupt_id = ""
-
-            st.session_state.quiz_answers.append(NO_ANSWER)
-            st.session_state.quiz_q_idx += 1
-            st.session_state.quiz_flash_id += 1
-            st.rerun()
+        # Initialize question start timestamp (no question timer)
+        ensure_question_state_for_current_idx()
 
         # Question + choices
         flash_css()
@@ -630,8 +687,16 @@ def render_quiz():
                 # lock immediately so rapid extra clicks do nothing
                 st.session_state.quiz_input_locked = True
 
-                # interrupt timer so we capture elapsed reliably
-                st.session_state.quiz_pending_choice = i
-                st.session_state.quiz_pending_choice_for_idx = st.session_state.quiz_q_idx
-                st.session_state.quiz_q_timer_interrupt_id = str(uuid.uuid4())
+                # autoscroll to top (rendered for 2 consecutive reruns for reliability)
+                st.session_state.quiz_scroll_ticks = 2
+
+                # duration measured in Python
+                start_ts = st.session_state.get("quiz_q_start_ts")
+                elapsed = (time.time() - start_ts) if start_ts else None
+
+                correct_idx = QUESTIONS[st.session_state.quiz_q_idx]["correct"]
+                error = 0 if i == correct_idx else 1
+                _record_trial(elapsed, error)
+
+                choose(i)
                 st.rerun()

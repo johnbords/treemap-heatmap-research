@@ -185,12 +185,16 @@ def genre_checkboxes(
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = True
                     _sync_and_fire()
+                    st.rerun()
 
             with btn_col2:
                 if st.button("Clear All"):
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = False
                     _sync_and_fire()
+
+                    # ✅ Force a fresh rerun so the controller rebuilds `fig` using genres=[]
+                    st.rerun()
 
             st.divider()
 
