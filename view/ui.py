@@ -1,13 +1,85 @@
+import os
+from pathlib import Path
+
 import streamlit as st
 import plotly.graph_objs as go
 
 from view import fixed_sidebar
-from view import quiz, practice_quiz
+from view import quiz
+
+
+# -----------------------------
+# Dataset uploader (persisted to disk)
+# -----------------------------
+
+def _get_persist_path() -> Path:
+    p = st.session_state.get("dataset_persist_path")
+    if not p:
+        # Fallback: current working dir
+        return Path("uploaded_dataset.csv").resolve()
+    return Path(str(p)).resolve()
+
+
+def _persist_uploaded_csv(uploaded_file) -> None:
+    persist_path = _get_persist_path()
+    persist_path.parent.mkdir(parents=True, exist_ok=True)
+    persist_path.write_bytes(uploaded_file.getvalue())
+
+
+def dataset_uploader() -> None:
+    """Uploader UI. When a CSV is uploaded, save it and force a full rerun."""
+    uploaded = st.file_uploader(
+        "Dataset (CSV)",
+        type=["csv"],
+        key="dataset_file_uploader",
+        help="Upload the CSV dataset used by the heatmap/treemap.",
+    )
+
+    if uploaded is None:
+        return
+
+    # Avoid re-writing on every rerun with the same file
+    fingerprint = (uploaded.name, getattr(uploaded, "size", None))
+    if st.session_state.get("_dataset_last_upload") == fingerprint:
+        return
+
+    st.session_state["_dataset_last_upload"] = fingerprint
+    _persist_uploaded_csv(uploaded)
+
+    # Clear UI-related state that depends on dataset columns/genres
+    for k in ["genres", "genres_ms"]:
+        if k in st.session_state:
+            del st.session_state[k]
+
+    st.rerun()
+
+
+def render_no_data_page() -> None:
+    """Shown when the app runs but no CSV has been uploaded yet."""
+
+    # Keep sidebar empty: configure it (for layout), but don't render quiz/filters.
+    fixed_sidebar.configure_sidebar(
+        page_title="Treemap vs Heatmap",
+        layout="wide",
+        expanded=True,
+        lock=False,
+        width_px=500,
+    )
+
+    st.title("Treemap vs Heatmap")
+    st.warning("No data to show. Upload the dataset first.")
+
+    # Settings expander (top-right) with uploader
+    spacer, controls = st.columns([6, 1])
+    with controls:
+        with st.expander("⚙ Settings", expanded=True):
+            dataset_uploader()
 
 
 # -----------------------------
 # Year filter (selectboxes)
 # -----------------------------
+
 def _sync_year_and_fire(on_change_func):
     override = st.session_state.get("year_filter_override")
     yf = st.session_state.get("year_from")
@@ -117,6 +189,7 @@ def year_selectbox(on_change_func):
 # -----------------------------
 # Genre filter (buttons + multiselect + checkboxes)
 # -----------------------------
+
 def genre_filters(
     genre_list: list,
     on_change_func=None,
@@ -233,6 +306,7 @@ def genre_filters(
 # -----------------------------
 # Page renderer
 # -----------------------------
+
 def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
     # MUST be the first Streamlit call (inside configure_sidebar)
     fixed_sidebar.configure_sidebar(
@@ -242,6 +316,10 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
         lock=False,
         width_px=500,
     )
+
+    # Keep a stable default
+    if "chart_type_radio" not in st.session_state:
+        st.session_state.chart_type_radio = "Heatmap"
 
     # Sidebar quiz (stays visible)
     quiz.render_quiz()
@@ -268,12 +346,8 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # --- Researcher-only chart toggle (hidden in top-right expander) ---
-    # Keep a stable default
-    if "chart_type_radio" not in st.session_state:
-        st.session_state.chart_type_radio = "Heatmap"
-
-    spacer, controls  = st.columns([6, 1])  # pushes controls to top-right
+    # --- Researcher-only settings (top-right expander) ---
+    spacer, controls = st.columns([6, 1])  # pushes controls to top-right
     with controls:
         with st.expander("⚙ Settings", expanded=False):
             st.radio(
@@ -283,3 +357,7 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
                 key="chart_type_radio",
                 on_change=on_change_func,
             )
+
+            st.divider()
+
+            dataset_uploader()
