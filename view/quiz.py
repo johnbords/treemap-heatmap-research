@@ -613,7 +613,7 @@ def _render_practice_sidebar():
     st.caption(f"Question {q_idx + 1} / {PRACTICE_TOTAL}")
 
     for i, text in enumerate(q["choices"]):
-        if st.button(text, key=f"practice_choice_{q_idx}_{i}", use_container_width=True):
+        if st.button(text, key=f"practice_choice_{q_idx}_{i}", width='stretch'):
             st.session_state.practice_answers.append(i)
             st.session_state.practice_q_idx += 1
 
@@ -676,7 +676,7 @@ def render_quiz():
             _clear_year_override()
             st.info("Click **Start** to begin.")
 
-            if st.button("Start", key="quiz_start", use_container_width=True):
+            if st.button("Start", key="quiz_start", width='stretch'):
                 # Check locks BEFORE starting / creating files / assigning participant id
                 if not _check_results_files_unlocked_or_warn():
                     st.stop()
@@ -752,7 +752,7 @@ def render_quiz():
 
             c1, c2 = st.columns(2)
             with c1:
-                if st.button("Restart", key="quiz_restart", use_container_width=True):
+                if st.button("Restart", key="quiz_restart", width='stretch'):
                     # restart full flow (Practice -> Get Ready -> Main)
                     st.session_state.quiz_started = False
                     st.session_state.quiz_phase = "idle"
@@ -760,7 +760,7 @@ def render_quiz():
                     st.rerun()
 
             with c2:
-                if st.button("Close", key="quiz_close", use_container_width=True):
+                if st.button("Close", key="quiz_close", width='stretch'):
                     st.session_state.quiz_started = False
                     st.session_state.quiz_phase = "idle"
                     st.session_state.run_prepared = False
@@ -799,7 +799,7 @@ def render_quiz():
             clicked = st.button(
                 text,
                 key=f"quiz_choice_{st.session_state.quiz_q_idx}_{i}",
-                use_container_width=True,
+                width='stretch',
                 disabled=st.session_state.quiz_input_locked,
             )
 

@@ -344,7 +344,7 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     st.subheader(f"Genre Popularity {chart_type}")
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # --- Researcher-only settings (top-right expander) ---
     spacer, controls = st.columns([6, 1])  # pushes controls to top-right
