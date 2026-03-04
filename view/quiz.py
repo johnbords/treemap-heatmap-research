@@ -10,6 +10,8 @@ import streamlit as st
 from streamlit_scroll_to_top import scroll_to_here
 
 from view import js_timer_component  # your existing JS timer component
+
+
 # ---------------------------
 # File path helper (PyInstaller-safe)
 # Writes/reads results beside the packaged .exe (or beside this file when running as scripts).
@@ -26,7 +28,7 @@ class FilePathConfig:
         else:  # If running as a python script
             stripped_file_path = os.path.dirname(os.path.abspath(__file__))
             # Strips folder level incrementally
-            for i in range(0, strip_count):
+            for _ in range(0, strip_count):
                 stripped_file_path = os.path.dirname(stripped_file_path)
             return stripped_file_path
 
@@ -36,15 +38,15 @@ class FilePathConfig:
         return os.path.join(file_path, folder_name, file_name)
 
 
-
 # ---------------------------
 # Config
 # ---------------------------
 QUIZ_COLOR = "#6FA8DC"
 FADE_SECONDS = 0.5
 
+RESULTS_DIR = FilePathConfig.generate_complete_file_path(folder_name="results", strip_count=0)
 
-RESULTS_DIR = FilePathConfig.generate_complete_file_path(folder_name="results", strip_count=0)# ---------------------------
+# ---------------------------
 # Year filter override (driven by question text)
 # Convention (recommended):
 #   Single year: "In the year XXXX, ..."
@@ -56,6 +58,7 @@ _SINGLE_YEAR_FALLBACK_RE = re.compile(r"\bIn\s+(\d{4})\b", re.IGNORECASE)
 
 _RANGE_FROM_TO_RE = re.compile(r"\bFrom\s+(\d{4})\s+to\s+(\d{4})\b", re.IGNORECASE)
 _RANGE_BETWEEN_AND_RE = re.compile(r"\bBetween\s+(\d{4})\s+and\s+(\d{4})\b", re.IGNORECASE)
+
 
 def _parse_year_override(question_text: str):
     """Return dict like {mode: 'single', year: 2000} or {mode:'range', from:1999, to:2002} or None."""
@@ -78,15 +81,40 @@ def _parse_year_override(question_text: str):
 
     return None
 
+
 def _clear_year_override():
     st.session_state.year_filter_override = None
+
 
 def _set_year_override_from_question(question_text: str):
     st.session_state.year_filter_override = _parse_year_override(question_text)
 
 
 # ---------------------------
-# Questions (hardcoded for now)
+# Practice Questions (UNTIMED)
+# ---------------------------
+PRACTICE_QUESTIONS = [
+    {
+        "q": "1) In the year 2001, which genre, from the list below, is more popular?\n\nRock, Country (2001)",
+        "choices": ["Rock", "Country"],
+        "correct": 1,
+    },
+    {
+        "q": "2) In the year 2003, which genre has the highest popularity?\n\nRock, Dance/Electronic, Latin, Country (Year 2003)",
+        "choices": ["Rock", "Dance/Electronic", "Latin", "Country"],
+        "correct": 2,
+    },
+    {
+        "q": "3) In the year 2020, what is the average popularity value of the genre 'World/Traditional'?\n\nWorld/Traditional (Year 2020)",
+        "choices": ["45.6", "52.1", "57.0", "68.9"],
+        "correct": 2,
+    },
+]
+PRACTICE_TOTAL = len(PRACTICE_QUESTIONS)
+
+
+# ---------------------------
+# Main Questions (TIMED)
 # ---------------------------
 QUESTIONS = [
 
@@ -96,19 +124,19 @@ QUESTIONS = [
 
     {"q": "1) In the year 1999, which genre has higher popularity? Hip Hop or Pop?\n\nHip Hop vs Pop (Year 1999)",
      "choices": ["Hip Hop", "Pop"],
-     "correct": 0}, # Answer: Hip Hop
+     "correct": 0},  # Answer: Hip Hop
 
     {"q": "2) In the year 2000, which genre, from the list below, has the second highest popularity?\n\nHip Hop, Metal, Pop, R&B (Year 2000)",
      "choices": ["Hip Hop", "Metal", "Pop", "R&B"],
-     "correct": 2}, # Answer: Pop
+     "correct": 2},  # Answer: Pop
 
     {"q": "3) In the year 2000, which genre, from the list below, has the lowest popularity?\n\nHip Hop, Metal, Pop, R&B (Year 2000)",
      "choices": ["Hip Hop", "Metal", "Pop", "R&B"],
-     "correct": 3}, # Answer: R&B
+     "correct": 3},  # Answer: R&B
 
     {"q": "4) From 1999 to 2002, in which year does R&B have the lowest average popularity value?\n\nR&B (1999–2002)",
      "choices": ["1999", "2000", "2001", "2002"],
-     "correct": 1}, # Answer: 2000
+     "correct": 1},  # Answer: 2000
 
     # -------------------------
     # Set 2
@@ -117,19 +145,19 @@ QUESTIONS = [
     {
         "q": "5) In the year 2007, which genre, from the list below, has the second highest popularity?\n\nDance-Electronic, Jazz, Latin, Rock (Year 2007)",
         "choices": ["Dance/Electronic", "Jazz", "Latin", "Rock"],
-        "correct": 0}, # Answer: Dance/Electronic
+        "correct": 0},  # Answer: Dance/Electronic
 
     {"q": "6) In the year 2006, what is the average popularity value of Rock?\n\nRock (Year 2006)",
      "choices": ["45.6", "42.0", "67.9", "68.1"],
-     "correct": 2}, # Answer: 67.9
+     "correct": 2},  # Answer: 67.9
 
     {"q": "7) From 2003 to 2007, in which year does Latin have the highest average popularity value?\n\nLatin (2003–2007)",
      "choices": ["2003", "2004", "2005", "2006", "2007"],
-     "correct": 3}, # Answer: 2006
+     "correct": 3},  # Answer: 2006
 
     {"q": "8) In the year 2004, which genre, from the list below, is missing?\n\nDance-Electronic, Jazz, Latin, Rock (Year 2004)",
      "choices": ["Dance/Electronic", "Jazz", "Latin", "Rock"],
-     "correct": 1}, # Answer: Jazz
+     "correct": 1},  # Answer: Jazz
 
     # -------------------------
     # Set 3
@@ -138,7 +166,7 @@ QUESTIONS = [
     {
         "q": "9) From 2008 to 2012, in which year does the genre 'Country' have the lowest average popularity value?\n\nCountry (2008–2012)",
         "choices": ["2008", "2009", "2010", "2011", "2012"],
-        "correct": 4}, # Answer: 2012
+        "correct": 4},  # Answer: 2012
 
     {"q": "10) In the year 2012, what is the average popularity value of the genre 'Folk/Acoustic?'\n\nFolk/Acoustic (Year 2012)",
      "choices": ["75.5", "76.9", "77.1", "79.0"],
@@ -228,6 +256,7 @@ def append_participant_result_csv(
         w = csv.writer(f)
         w.writerow(row)
 
+
 def is_workbook_open_or_locked(path: str) -> bool:
     """
     Returns True if the target XLSX is likely open/locked (Excel commonly locks files on Windows).
@@ -272,6 +301,7 @@ def is_workbook_open_or_locked(path: str) -> bool:
             f.close()
         except Exception:
             pass
+
 
 # ============================================================
 # CSV -> XLSX conversion (after EACH participant run)
@@ -368,24 +398,48 @@ def reset_quiz():
     st.session_state.quiz_input_locked = False
 
     # timer state
-
     st.session_state.quiz_handled_done_run_id = None
 
 
-def start_get_ready():
-    # lock the output CSV for THIS run based on selected datamap at Start time
+def reset_practice():
+    st.session_state.practice_q_idx = 0
+    st.session_state.practice_answers = []
+
+
+def _prepare_participant_run():
+    """
+    Prepare run artifacts (CSV path, participant id) ONCE when Start is clicked.
+    This keeps the participant id stable through: Practice -> Get ready -> Main quiz.
+    """
     csv_path = _results_csv_path()
     st.session_state.results_csv_path = csv_path
 
     ensure_csv_file(csv_path, TOTAL_QUESTIONS)
     st.session_state.participant_id = get_next_participant_id(csv_path)
 
-    st.session_state.quiz_started = True
+    st.session_state.run_prepared = True
+
+
+def _begin_get_ready_phase():
     st.session_state.quiz_phase = "get_ready"
     reset_quiz()
 
     st.session_state.quiz_ready_key = f"quiz_ready_timer_{uuid.uuid4()}"
     st.session_state.quiz_ready_run_id = str(uuid.uuid4())
+    st.rerun()
+
+
+def start_flow():
+    """
+    Sequence:
+      Start button -> Practice quiz (untimed) -> Get ready phase -> Main questions (timed)
+    """
+    _prepare_participant_run()
+
+    st.session_state.quiz_started = True
+    st.session_state.quiz_phase = "practice"
+    reset_practice()
+
     st.rerun()
 
 
@@ -439,7 +493,7 @@ def _save_and_convert_if_needed():
     # 2) Convert CSV -> XLSX (after each participant)
     xlsx_path = _results_xlsx_path_from_csv(csv_path)
 
-    # ✅ NEW: proactively detect Excel lock/open workbook
+    # proactively detect Excel lock/open workbook
     if is_workbook_open_or_locked(xlsx_path):
         st.session_state.converted_to_xlsx = False
         st.session_state.results_xlsx_path = xlsx_path
@@ -463,6 +517,7 @@ def _save_and_convert_if_needed():
             "Saved to CSV, but could not update the XLSX because it is likely open in Excel.\n"
             "Close the XLSX file, then the next participant will update it."
         )
+
 
 def _is_file_locked(path: str) -> bool:
     """
@@ -504,6 +559,7 @@ def _is_file_locked(path: str) -> bool:
         except Exception:
             pass
 
+
 def _check_results_files_unlocked_or_warn() -> bool:
     csv_path = _results_csv_path()
     xlsx_path = _results_xlsx_path_from_csv(csv_path)
@@ -517,19 +573,73 @@ def _check_results_files_unlocked_or_warn() -> bool:
 
     return True
 
+
+# ============================================================
+# Practice render (UNTIMED)
+# ============================================================
+def _render_practice_sidebar():
+    st.header("Practice Questions")
+
+    # finished -> automatically go to Get Ready
+    if st.session_state.practice_q_idx >= PRACTICE_TOTAL:
+        _clear_year_override()
+        st.success("Practice complete. Starting the main quiz...")
+        _begin_get_ready_phase()
+        return
+
+    q_idx = st.session_state.practice_q_idx
+    q = PRACTICE_QUESTIONS[q_idx]
+
+    q_text = q["q"].split("\n\n")
+    main = q_text[0]
+    focus = q_text[1] if len(q_text) > 1 else ""
+
+    _set_year_override_from_question(main)
+
+    st.markdown(
+        f"""
+        <div class='quiz-q'>
+            <b>{main}</b>
+            <br><br>
+            <div style='text-align:center; font-weight:bold; font-size:18px;'>
+                {focus}
+            </div>
+            <br>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.caption(f"Question {q_idx + 1} / {PRACTICE_TOTAL}")
+
+    for i, text in enumerate(q["choices"]):
+        if st.button(text, key=f"practice_choice_{q_idx}_{i}", use_container_width=True):
+            st.session_state.practice_answers.append(i)
+            st.session_state.practice_q_idx += 1
+
+            # optional: autoscroll to top for the next question
+            st.session_state.quiz_scroll_ticks = 2
+            st.rerun()
+
+
 # ============================================================
 # Main render
 # ============================================================
 def render_quiz():
-    st.session_state.setdefault("active_quiz", None)
-
-    if st.session_state.get("active_quiz") == "practice":
-        return
     # ---------------------------
     # State init
     # ---------------------------
     st.session_state.setdefault("quiz_started", False)
-    st.session_state.setdefault("quiz_phase", "idle")  # idle|get_ready|quiz
+    st.session_state.setdefault("quiz_phase", "idle")  # idle|practice|get_ready|quiz
+
+    st.session_state.setdefault("run_prepared", False)
+    st.session_state.setdefault("participant_id", None)
+
+    # practice state
+    st.session_state.setdefault("practice_q_idx", 0)
+    st.session_state.setdefault("practice_answers", [])
+
+    # main quiz state
     st.session_state.setdefault("quiz_q_idx", 0)
     st.session_state.setdefault("quiz_answers", [])
     st.session_state.setdefault("quiz_flash_id", 0)
@@ -537,7 +647,6 @@ def render_quiz():
     st.session_state.setdefault("quiz_ready_key", f"quiz_ready_timer_{uuid.uuid4()}")
     st.session_state.setdefault("quiz_ready_run_id", str(uuid.uuid4()))
 
-    st.session_state.setdefault("participant_id", None)
     st.session_state.setdefault("trial_times", [])
     st.session_state.setdefault("trial_errors", [])
     st.session_state.setdefault("saved_to_disk", False)
@@ -550,31 +659,42 @@ def render_quiz():
 
     st.session_state.setdefault("results_csv_path", None)
     st.session_state.setdefault("results_xlsx_path", None)
+    st.session_state.setdefault("xlsx_open", False)
 
     # --- Autoscroll to top (render for 2 reruns for reliability) ---
     if st.session_state.get("quiz_scroll_ticks", 0) > 0:
         scroll_to_here(0, key=f"quiz_scroll_{uuid.uuid4()}")
         st.session_state.quiz_scroll_ticks -= 1
 
-
     with st.sidebar:
         st.header("Quiz")
 
-        # Idle
+        # ------------------------------------------------------------
+        # Idle (Start)
+        # ------------------------------------------------------------
         if not st.session_state.quiz_started or st.session_state.quiz_phase == "idle":
             _clear_year_override()
             st.info("Click **Start** to begin.")
+
             if st.button("Start", key="quiz_start", use_container_width=True):
-                # ✅ Check locks BEFORE starting / creating files / assigning participant id
+                # Check locks BEFORE starting / creating files / assigning participant id
                 if not _check_results_files_unlocked_or_warn():
                     st.stop()
 
-                st.session_state.active_quiz = "main"
-                st.session_state.practice_mode = False
-                start_get_ready()
+                start_flow()
+
             return
 
+        # ------------------------------------------------------------
+        # Practice (UNTIMED)
+        # ------------------------------------------------------------
+        if st.session_state.quiz_phase == "practice":
+            _render_practice_sidebar()
+            return
+
+        # ------------------------------------------------------------
         # Get Ready
+        # ------------------------------------------------------------
         if st.session_state.quiz_phase == "get_ready":
             _clear_year_override()
             st.markdown(
@@ -602,7 +722,9 @@ def render_quiz():
                 st.rerun()
             return
 
+        # ------------------------------------------------------------
         # Finished (AUTO SAVE + AUTO CONVERT AFTER 1 PARTICIPANT)
+        # ------------------------------------------------------------
         if st.session_state.quiz_q_idx >= TOTAL_QUESTIONS:
             _clear_year_override()
             _save_and_convert_if_needed()
@@ -611,50 +733,52 @@ def render_quiz():
             st.success("Quiz finished!")
 
             chart = st.session_state.get("chart_type_radio", "Heatmap")
-            st.write(f"Participant ID: **{st.session_state.participant_id}**")
+            # st.write(f"Participant ID: **{st.session_state.participant_id}**")
             st.write(f"Datamap: **{chart}**")
-            st.write(f"CSV: `{st.session_state.get('results_csv_path') or _results_csv_path()}`")
+            # st.write(f"CSV: `{st.session_state.get('results_csv_path') or _results_csv_path()}`")
 
             xlsx_path = st.session_state.get("results_xlsx_path") or _results_xlsx_path_from_csv(
                 st.session_state.get("results_csv_path") or _results_csv_path()
             )
-            st.write(f"XLSX: `{xlsx_path}`")
+            # st.write(f"XLSX: `{xlsx_path}`")
 
-            if st.session_state.converted_to_xlsx:
-                st.caption("✅ XLSX updated after this participant.")
-            else:
-                st.caption("⚠️ XLSX not updated (probably open in Excel). CSV is saved.")
+            # if st.session_state.converted_to_xlsx:
+            #     st.caption("✅ XLSX updated after this participant.")
+            # else:
+            #     st.caption("⚠️ XLSX not updated (probably open in Excel). CSV is saved.")
 
-            st.write(f"Score: **{sum_correct_answers()} / {TOTAL_QUESTIONS}**")
-            st.write(f"Total errors: **{sum_wrong_answers()}**")
+            # st.write(f"Score: **{sum_correct_answers()} / {TOTAL_QUESTIONS}**")
+            # st.write(f"Total errors: **{sum_wrong_answers()}**")
 
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("Restart", key="quiz_restart", use_container_width=True):
-                    st.session_state.active_quiz = "main"  # ✅ ADD
-                    st.session_state.practice_mode = False  # ✅ ADD
-                    start_get_ready()
-            with c2:
-                if st.button("Close", key="quiz_close", use_container_width=True):
-                    st.session_state.active_quiz = None  # ✅ ADD (optional)
-                    st.session_state.practice_mode = False  # ✅ ADD
+                    # restart full flow (Practice -> Get Ready -> Main)
                     st.session_state.quiz_started = False
                     st.session_state.quiz_phase = "idle"
+                    st.session_state.run_prepared = False
+                    st.rerun()
+
+            with c2:
+                if st.button("Close", key="quiz_close", use_container_width=True):
+                    st.session_state.quiz_started = False
+                    st.session_state.quiz_phase = "idle"
+                    st.session_state.run_prepared = False
                     st.rerun()
             return
 
-        # Initialize question start timestamp (no question timer)
+        # ------------------------------------------------------------
+        # Main Quiz Questions (TIMED)
+        # ------------------------------------------------------------
         ensure_question_state_for_current_idx()
-
-        # Question + choices
         flash_css()
 
         q = QUESTIONS[st.session_state.quiz_q_idx]
-        q_text = q['q'].split("\n\n")
+        q_text = q["q"].split("\n\n")
         main = q_text[0]
         focus = q_text[1] if len(q_text) > 1 else ""
 
-        _set_year_override_from_question(main)  # <-- parse ONLY the first line
+        _set_year_override_from_question(main)  # parse ONLY the first line
 
         st.markdown(
             f"""
@@ -667,7 +791,7 @@ def render_quiz():
                 <br>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
         # Debounced buttons: disable immediately after first click

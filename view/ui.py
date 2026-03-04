@@ -245,7 +245,6 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
 
     # Sidebar quiz (stays visible)
     quiz.render_quiz()
-    practice_quiz.render_practice_quiz()
 
     # Main page content
     st.title("Treemap vs Heatmap")
@@ -262,17 +261,25 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
         columns=2,
     )
 
-    # 2-selection radio BETWEEN filters and chart
-    st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-    chart_type = st.radio(
-        "Chart type",
-        options=["Heatmap", "Treemap"],
-        horizontal=True,
-        key="chart_type_radio",
-        on_change=on_change_func,
-    )
+    chart_type = st.session_state.chart_type_radio
 
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     st.subheader(f"Genre Popularity {chart_type}")
 
     st.plotly_chart(fig, use_container_width=True)
+
+    # --- Researcher-only chart toggle (hidden in top-right expander) ---
+    # Keep a stable default
+    if "chart_type_radio" not in st.session_state:
+        st.session_state.chart_type_radio = "Heatmap"
+
+    spacer, controls  = st.columns([6, 1])  # pushes controls to top-right
+    with controls:
+        with st.expander("⚙ Settings", expanded=False):
+            st.radio(
+                "Chart type",
+                options=["Heatmap", "Treemap"],
+                horizontal=True,
+                key="chart_type_radio",
+                on_change=on_change_func,
+            )
