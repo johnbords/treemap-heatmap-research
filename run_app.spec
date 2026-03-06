@@ -11,6 +11,7 @@ datas = [
     ('controller', 'controller'),
     ('model', 'model'),
     ('view', 'view'),
+    ('.streamlit/config.toml', '.streamlit'),
 ]
 binaries = []
 hiddenimports = []
