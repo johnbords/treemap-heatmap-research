@@ -4,6 +4,7 @@ import uuid
 import csv
 import re
 import time
+import html
 from typing import List, Optional
 
 import streamlit as st
@@ -41,7 +42,7 @@ class FilePathConfig:
 # ---------------------------
 # Config
 # ---------------------------
-QUIZ_COLOR = "#32cd32"
+QUIZ_COLOR = "#6FA8DC"
 FADE_SECONDS = 0.5
 
 RESULTS_DIR = FilePathConfig.generate_complete_file_path(folder_name="results", strip_count=0)
@@ -577,6 +578,40 @@ def _check_results_files_unlocked_or_warn() -> bool:
 # ============================================================
 # Practice render (UNTIMED)
 # ============================================================
+
+
+def _quiz_typography():
+    font_size = int(st.session_state.get("font_size_px", 14))
+    font_label = st.session_state.get("font_family", "Sans Serif")
+    font_family = {
+        "Sans Serif": "Arial, Helvetica, sans-serif",
+        "Serif": '"Times New Roman", Times, serif',
+        "Monospace": '"Courier New", Courier, monospace',
+    }.get(font_label, "Arial, Helvetica, sans-serif")
+    focus_size = max(font_size, int(round(font_size * 1.05)))
+    return {
+        "font_size": font_size,
+        "font_family": font_family,
+        "focus_size": focus_size,
+    }
+
+
+def _render_quiz_question(main: str, focus: str) -> None:
+    typo = _quiz_typography()
+    main_safe = html.escape(str(main or ""))
+    focus_safe = html.escape(str(focus or ""))
+
+    st.markdown(
+        f"""
+        <div class="quiz-q" style="font-size:{typo['font_size']}px; font-family:{typo['font_family']}; line-height:1.5;">
+            <div style="font-weight:bold;">{main_safe}</div>
+            {f'<div style="height:0.9rem;"></div><div style="text-align:center; font-weight:bold; font-size:{typo["focus_size"]}px; font-family:{typo["font_family"]};">{focus_safe}</div>' if focus_safe else ''}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def _render_practice_sidebar():
     st.header("Practice Questions")
 
@@ -595,20 +630,7 @@ def _render_practice_sidebar():
     focus = q_text[1] if len(q_text) > 1 else ""
 
     _set_year_override_from_question(main)
-
-    st.markdown(
-        f"""
-        <div class='quiz-q'>
-            <b>{main}</b>
-            <br><br>
-            <div style='text-align:center; font-weight:bold; font-size:18px;'>
-                {focus}
-            </div>
-            <br>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    _render_quiz_question(main, focus)
 
     st.caption(f"Question {q_idx + 1} / {PRACTICE_TOTAL}")
 
@@ -779,20 +801,7 @@ def render_quiz():
         focus = q_text[1] if len(q_text) > 1 else ""
 
         _set_year_override_from_question(main)  # parse ONLY the first line
-
-        st.markdown(
-            f"""
-            <div class='quiz-q'>
-                <b>{main}</b>
-                <br><br>
-                <div style='text-align:center; font-weight:bold; font-size:18px;'>
-                    {focus}
-                </div>
-                <br>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        _render_quiz_question(main, focus)
 
         # Debounced buttons: disable immediately after first click
         for i, text in enumerate(q["choices"]):
