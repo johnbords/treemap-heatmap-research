@@ -327,10 +327,10 @@ def genre_filters(
     host = st.container(border=True) if bordered else st.container()
     with host:
         if show_select_controls:
-            c1, c2, _ = st.columns([1, 1, 10])
-
+            # c1, c2, _ = st.columns([1, 1, 10])
+            c1, c2 = st.columns(2)
             with c1:
-                if st.button("Select All"):
+                if st.button("Select All", width='stretch'):
                     st.session_state.genres_ms = genres_sorted[:]
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = True
@@ -338,7 +338,7 @@ def genre_filters(
                     st.rerun()
 
             with c2:
-                if st.button("Clear All"):
+                if st.button("Clear All", width='stretch'):
                     st.session_state.genres_ms = []
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = False
