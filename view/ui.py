@@ -417,6 +417,6 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
 
     st.plotly_chart(fig, width="stretch")
 
-    spacer, controls = st.columns([6, 1])
+    sp1, sp2, sp3 , controls = st.columns([0.5, 0.5, 0.5, 1])
     with controls:
         settings_expander(on_change_func=on_change_func, expanded=False, show_chart_type=True)
