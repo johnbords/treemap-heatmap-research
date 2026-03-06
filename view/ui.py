@@ -8,6 +8,12 @@ from view import fixed_sidebar
 from view import quiz
 
 
+if "font_size_px" not in st.session_state:
+    st.session_state.font_size_px = 16
+
+if "hover_font_size_px" not in st.session_state:
+    st.session_state.hover_font_size_px = 16
+
 # -----------------------------
 # Dataset uploader (persisted to disk)
 # -----------------------------
@@ -122,7 +128,6 @@ def typography_settings() -> None:
         "Font size",
         min_value=10,
         max_value=28,
-        value=int(st.session_state.get("font_size_px", 16)),
         key="font_size_px",
     )
 
@@ -130,7 +135,6 @@ def typography_settings() -> None:
         "Hover tooltip font size",
         min_value=10,
         max_value=28,
-        value=int(st.session_state.get("hover_font_size_px", 16)),
         key="hover_font_size_px",
     )
 
