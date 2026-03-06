@@ -132,7 +132,7 @@ def year_selectbox(on_change_func):
         col_from, _ = st.columns([1, 7])
         with col_from:
             from_year = st.selectbox(
-                "",
+                "Year",
                 options=years,
                 placeholder="Select a year",
                 key="year_from",
@@ -152,7 +152,7 @@ def year_selectbox(on_change_func):
 
     with col_from:
         from_year = st.selectbox(
-            "",
+            "From year",
             options=years,
             placeholder="From",
             key="year_from",
@@ -168,7 +168,7 @@ def year_selectbox(on_change_func):
 
     with col_to:
         to_year = st.selectbox(
-            "",
+            "To year",
             options=years,
             placeholder="To",
             key="year_to",
