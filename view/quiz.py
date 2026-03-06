@@ -42,7 +42,7 @@ class FilePathConfig:
 # ---------------------------
 # Config
 # ---------------------------
-QUIZ_COLOR = "#6FA8DC"
+QUIZ_COLOR = "#32cd32"
 FADE_SECONDS = 0.5
 
 RESULTS_DIR = FilePathConfig.generate_complete_file_path(folder_name="results", strip_count=0)
