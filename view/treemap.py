@@ -3,6 +3,15 @@ import pandas as pd
 import plotly.graph_objs as go
 
 
+def _font_family_css(font_family_label: str) -> str:
+    mapping = {
+        "Sans Serif": "Arial, Helvetica, sans-serif",
+        "Serif": '"Times New Roman", Times, serif',
+        "Monospace": '"Courier New", Courier, monospace',
+    }
+    return mapping.get(font_family_label, mapping["Sans Serif"])
+
+
 # -----------------------------
 # Treemap builder w/ filters
 # -----------------------------
@@ -12,6 +21,9 @@ def build_treemap_figure(
     start_year: int,
     end_year: int,
     selected_genres_tuple: tuple,
+    font_size: int,
+    hover_font_size: int,
+    font_family: str,
 ) -> go.Figure:
 
     # Filter years
@@ -28,6 +40,8 @@ def build_treemap_figure(
             title="Treemap (Year → Genre)",
             annotations=[dict(text="No data for the selected filters.", showarrow=False)],
             margin=dict(t=50, l=25, r=25, b=25),
+            font=dict(size=font_size, family=font_family),
+            hoverlabel=dict(font=dict(size=hover_font_size, family=font_family)),
         )
         return fig
 
@@ -73,9 +87,6 @@ def build_treemap_figure(
             parents.append(f"year:{y}")
             values.append(float(r["popularity"]))
 
-    # -----------------------------
-    # COLORS (UNCHANGED)
-    # -----------------------------
     root_fill_color = "#444444"
 
     year_container_palette = [
@@ -120,9 +131,6 @@ def build_treemap_figure(
             year = p.replace("year:", "")
             node_colors.append(year_to_genre.get(year))
 
-    # -----------------------------
-    # IMPROVED VISUAL SEPARATION
-    # -----------------------------
     line_colors = []
     line_widths = []
 
@@ -131,11 +139,9 @@ def build_treemap_figure(
             line_colors.append("white")
             line_widths.append(3)
         elif p == ROOT_ID:
-            # Year containers
             line_colors.append("rgba(0,0,0,0.6)")
             line_widths.append(4)
         else:
-            # Genre leaves
             line_colors.append("rgba(255,255,255,0.9)")
             line_widths.append(1.5)
 
@@ -156,22 +162,27 @@ def build_treemap_figure(
             values=values,
             branchvalues="total",
             sort=False,
-            # Padding between tiles
             tiling=dict(packing="squarify", pad=4),
             marker=dict(
                 colors=node_colors,
                 line=dict(color=line_colors, width=line_widths),
             ),
-            textfont=dict(color=node_text_colors, size=13),
+            textfont=dict(color=node_text_colors, size=max(10, font_size)),
+            textinfo="label",
             hovertemplate="<b>%{label}</b><br>Avg. Popularity: %{value:.1f}<extra></extra>",
+            hoverlabel=dict(font=dict(size=hover_font_size, family=font_family)),
         )
     )
 
     fig.update_layout(
         title="Treemap (Year → Genre) — Ordered by value",
         width=1000,
-        height=700
+        height=700,
+        font=dict(size=font_size, family=font_family),
+        hoverlabel=dict(font=dict(size=hover_font_size, family=font_family)),
     )
+
+    fig.update_traces(hoverlabel=dict(font=dict(size=hover_font_size, family=font_family)))
 
     return fig
 
@@ -181,4 +192,15 @@ def build_treemap_figure(
 # -----------------------------
 def render(df: pd.DataFrame, year_range: tuple, selected_genres: list) -> go.Figure:
     start_year, end_year = year_range
-    return build_treemap_figure(df, start_year, end_year, tuple(selected_genres))
+    font_size = int(st.session_state.get("font_size_px", 16))
+    hover_font_size = int(st.session_state.get("hover_font_size_px", 16))
+    font_family = _font_family_css(st.session_state.get("font_family", "Sans Serif"))
+    return build_treemap_figure(
+        df,
+        start_year,
+        end_year,
+        tuple(selected_genres),
+        font_size,
+        hover_font_size,
+        font_family,
+    )

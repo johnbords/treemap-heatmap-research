@@ -15,15 +15,16 @@ from view import quiz
 def _get_persist_path() -> Path:
     p = st.session_state.get("dataset_persist_path")
     if not p:
-        # Fallback: current working dir
         return Path("uploaded_dataset.csv").resolve()
     return Path(str(p)).resolve()
+
 
 
 def _persist_uploaded_csv(uploaded_file) -> None:
     persist_path = _get_persist_path()
     persist_path.parent.mkdir(parents=True, exist_ok=True)
     persist_path.write_bytes(uploaded_file.getvalue())
+
 
 
 def dataset_uploader() -> None:
@@ -38,7 +39,6 @@ def dataset_uploader() -> None:
     if uploaded is None:
         return
 
-    # Avoid re-writing on every rerun with the same file
     fingerprint = (uploaded.name, getattr(uploaded, "size", None))
     if st.session_state.get("_dataset_last_upload") == fingerprint:
         return
@@ -46,7 +46,6 @@ def dataset_uploader() -> None:
     st.session_state["_dataset_last_upload"] = fingerprint
     _persist_uploaded_csv(uploaded)
 
-    # Clear UI-related state that depends on dataset columns/genres
     for k in ["genres", "genres_ms"]:
         if k in st.session_state:
             del st.session_state[k]
@@ -54,10 +53,111 @@ def dataset_uploader() -> None:
     st.rerun()
 
 
+# -----------------------------
+# Typography settings
+# -----------------------------
+
+def _init_typography_state() -> None:
+    st.session_state.setdefault("font_family", "Sans Serif")
+    st.session_state.setdefault("font_size_px", 16)
+    st.session_state.setdefault("hover_font_size_px", 16)
+
+
+
+def _font_family_css(font_family_label: str) -> str:
+    mapping = {
+        "Sans Serif": "Arial, Helvetica, sans-serif",
+        "Serif": '"Times New Roman", Times, serif',
+        "Monospace": '"Courier New", Courier, monospace',
+    }
+    return mapping.get(font_family_label, mapping["Sans Serif"])
+
+
+
+def _inject_typography_css() -> None:
+    _init_typography_state()
+    font_family = _font_family_css(st.session_state.get("font_family", "Sans Serif"))
+    font_size = int(st.session_state.get("font_size_px", 16))
+
+    st.markdown(
+        f"""
+        <style>
+        div.block-container,
+        [data-testid="stSidebar"] .block-container {{
+            font-family: {font_family};
+            font-size: {font_size}px;
+        }}
+
+        div.block-container p,
+        div.block-container label,
+        div.block-container li,
+        div.block-container .stMarkdown,
+        div.block-container .stCaption,
+        div.block-container [data-testid="stMetricValue"],
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] li,
+        [data-testid="stSidebar"] .stMarkdown,
+        [data-testid="stSidebar"] .stCaption {{
+            font-family: {font_family};
+            font-size: {font_size}px;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+
+def typography_settings() -> None:
+    _init_typography_state()
+
+    st.selectbox(
+        "Font style",
+        options=["Sans Serif", "Serif", "Monospace"],
+        key="font_family",
+    )
+
+    st.slider(
+        "Font size",
+        min_value=10,
+        max_value=28,
+        value=int(st.session_state.get("font_size_px", 16)),
+        key="font_size_px",
+    )
+
+    st.slider(
+        "Hover tooltip font size",
+        min_value=10,
+        max_value=28,
+        value=int(st.session_state.get("hover_font_size_px", 16)),
+        key="hover_font_size_px",
+    )
+
+
+
+def settings_expander(on_change_func=None, expanded=False, show_chart_type=True) -> None:
+    _init_typography_state()
+
+    with st.expander("⚙ Settings", expanded=expanded):
+        if show_chart_type:
+            st.radio(
+                "Chart type",
+                options=["Heatmap", "Treemap"],
+                horizontal=True,
+                key="chart_type_radio",
+                on_change=on_change_func,
+            )
+            st.divider()
+
+        typography_settings()
+        st.divider()
+        dataset_uploader()
+
+
+
 def render_no_data_page() -> None:
     """Shown when the app runs but no CSV has been uploaded yet."""
-
-    # Keep sidebar empty: configure it (for layout), but don't render quiz/filters.
     fixed_sidebar.configure_sidebar(
         page_title="Treemap vs Heatmap",
         layout="wide",
@@ -66,14 +166,14 @@ def render_no_data_page() -> None:
         width_px=500,
     )
 
+    _inject_typography_css()
+
     st.title("Treemap vs Heatmap")
     st.warning("No data to show. Upload the dataset first.")
 
-    # Settings expander (top-right) with uploader
     spacer, controls = st.columns([6, 1])
     with controls:
-        with st.expander("⚙ Settings", expanded=True):
-            dataset_uploader()
+        settings_expander(expanded=True, show_chart_type=False)
 
 
 # -----------------------------
@@ -84,11 +184,9 @@ def _sync_year_and_fire(on_change_func):
     override = st.session_state.get("year_filter_override")
     yf = st.session_state.get("year_from")
 
-    # No selection yet → do nothing (don't poison year_range)
     if yf is None:
         return
 
-    # Single-year mode: force year_to = year_from
     if override and override.get("mode") == "single":
         st.session_state.year_to = yf
         st.session_state.year_range = (yf, yf)
@@ -104,18 +202,15 @@ def _sync_year_and_fire(on_change_func):
         on_change_func()
 
 
+
 def year_selectbox(on_change_func):
     st.markdown("### 📅 Year Range")
 
     years = list(range(1998, 2021))
 
-    # Unified state (like your old slider key)
     if "year_range" not in st.session_state:
         st.session_state.year_range = (1998, 2020)
 
-    # Override driven by quiz question text:
-    #   st.session_state.year_filter_override = {"mode":"single","year":2000}
-    #   st.session_state.year_filter_override = {"mode":"range","from":1999,"to":2002}
     override = st.session_state.get("year_filter_override")
 
     if "year_from" not in st.session_state:
@@ -123,11 +218,9 @@ def year_selectbox(on_change_func):
     if "year_to" not in st.session_state:
         st.session_state.year_to = None
 
-    # If override is active, force state consistency
     if override and override.get("mode") == "single":
         st.session_state.year_to = st.session_state.year_from
 
-    # Single-year mode: show only ONE box
     if override and override.get("mode") == "single":
         col_from, _ = st.columns([1, 7])
         with col_from:
@@ -147,7 +240,6 @@ def year_selectbox(on_change_func):
         st.session_state.year_range = (from_year, from_year)
         return
 
-    # Range mode (default): two boxes with a dash
     col_from, col_dash, col_to, _ = st.columns([1, 0.3, 1, 6])
 
     with col_from:
@@ -197,15 +289,6 @@ def genre_filters(
     bordered: bool = True,
     show_select_controls: bool = True,
 ):
-    """
-    Genre selector with BOTH:
-      - multiselect (key='genres_ms')
-      - checkbox grid (keys='genre_<name>')
-
-    Final selection = UNION of both, stored in st.session_state['genres'].
-    Avoids modifying widget keys after instantiation (Streamlit restriction).
-    """
-
     st.markdown(
         """
         <style>
@@ -217,11 +300,9 @@ def genre_filters(
 
     genres_sorted = sorted(genre_list, key=lambda s: str(s).lower())
 
-    # Non-widget final output
     if "genres" not in st.session_state:
         st.session_state.genres = []
 
-    # Widget states (only initialize if missing)
     if "genres_ms" not in st.session_state:
         st.session_state.genres_ms = []
 
@@ -234,7 +315,6 @@ def genre_filters(
         ms = set(st.session_state.get("genres_ms", []))
         checked = {g for g in genres_sorted if st.session_state.get(f"genre_{g}", False)}
         combined = ms | checked
-        # keep stable ordering
         return [g for g in genres_sorted if g in combined]
 
     def _update_final_and_fire():
@@ -246,13 +326,11 @@ def genre_filters(
 
     host = st.container(border=True) if bordered else st.container()
     with host:
-        # Buttons row (above multiselect)
         if show_select_controls:
             c1, c2, _ = st.columns([1, 1, 10])
 
             with c1:
                 if st.button("Select All"):
-                    # SAFE: runs before widgets are instantiated on this rerun
                     st.session_state.genres_ms = genres_sorted[:]
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = True
@@ -261,7 +339,6 @@ def genre_filters(
 
             with c2:
                 if st.button("Clear All"):
-                    # SAFE: runs before widgets are instantiated on this rerun
                     st.session_state.genres_ms = []
                     for g in genres_sorted:
                         st.session_state[f"genre_{g}"] = False
@@ -270,7 +347,6 @@ def genre_filters(
 
             st.divider()
 
-        # Multiselect (between buttons and checkboxes)
         st.multiselect(
             "Genre (Multi-select)",
             options=genres_sorted,
@@ -280,7 +356,6 @@ def genre_filters(
 
         st.divider()
 
-        # Checkbox grid
         total = len(genres_sorted)
         rows_per_col = (total + columns - 1) // columns
         cols = st.columns(columns)
@@ -298,7 +373,6 @@ def genre_filters(
                         on_change=_update_final_and_fire,
                     )
 
-    # Always keep final union updated each run (safe: 'genres' is not a widget key)
     st.session_state.genres = _compute_union()
     return st.session_state.genres
 
@@ -308,7 +382,6 @@ def genre_filters(
 # -----------------------------
 
 def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
-    # MUST be the first Streamlit call (inside configure_sidebar)
     fixed_sidebar.configure_sidebar(
         page_title="Treemap vs Heatmap",
         layout="wide",
@@ -317,14 +390,13 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
         width_px=500,
     )
 
-    # Keep a stable default
     if "chart_type_radio" not in st.session_state:
         st.session_state.chart_type_radio = "Heatmap"
 
-    # Sidebar quiz (stays visible)
+    _inject_typography_css()
+
     quiz.render_quiz()
 
-    # Main page content
     st.title("Treemap vs Heatmap")
     st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
@@ -332,7 +404,6 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
 
     year_selectbox(on_change_func)
 
-    # Genre selector (multiselect + checkboxes, unioned)
     genre_filters(
         genre_list,
         on_change_func,
@@ -344,20 +415,8 @@ def render_page(fig: go.Figure, on_change_func, genre_list: list) -> None:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     st.subheader(f"Genre Popularity {chart_type}")
 
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(fig, width="stretch")
 
-    # --- Researcher-only settings (top-right expander) ---
-    spacer, controls = st.columns([6, 1])  # pushes controls to top-right
+    spacer, controls = st.columns([6, 1])
     with controls:
-        with st.expander("⚙ Settings", expanded=False):
-            st.radio(
-                "Chart type",
-                options=["Heatmap", "Treemap"],
-                horizontal=True,
-                key="chart_type_radio",
-                on_change=on_change_func,
-            )
-
-            st.divider()
-
-            dataset_uploader()
+        settings_expander(on_change_func=on_change_func, expanded=False, show_chart_type=True)
