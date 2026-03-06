@@ -605,7 +605,7 @@ def _render_quiz_question(main: str, focus: str) -> None:
         f"""
         <div class="quiz-q" style="font-size:{typo['font_size']}px; font-family:{typo['font_family']}; line-height:1.5;">
             <div style="font-weight:bold;">{main_safe}</div>
-            {f'<div style="height:0.9rem;"></div><div style="text-align:center; font-weight:bold; font-size:{typo["focus_size"]}px; font-family:{typo["font_family"]};">{focus_safe}</div>' if focus_safe else ''}
+            {f'<div style="height:2rem;"></div><div style="text-align:center; font-weight:bold; font-size:{typo["focus_size"]}px; font-family:{typo["font_family"]};">{focus_safe}</div>' if focus_safe else ''}
         </div>
         """,
         unsafe_allow_html=True,
@@ -802,6 +802,8 @@ def render_quiz():
 
         _set_year_override_from_question(main)  # parse ONLY the first line
         _render_quiz_question(main, focus)
+
+        st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 
         # Debounced buttons: disable immediately after first click
         for i, text in enumerate(q["choices"]):
