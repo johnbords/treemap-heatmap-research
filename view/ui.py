@@ -7,13 +7,6 @@ import plotly.graph_objs as go
 from view import fixed_sidebar
 from view import quiz
 
-
-if "font_size_px" not in st.session_state:
-    st.session_state.font_size_px = 16
-
-if "hover_font_size_px" not in st.session_state:
-    st.session_state.hover_font_size_px = 16
-
 # -----------------------------
 # Dataset uploader (persisted to disk)
 # -----------------------------
@@ -273,7 +266,7 @@ def year_selectbox(on_change_func):
 
     if from_year > to_year:
         st.warning("Invalid year range. Try to pick another year")
-        st.stop()
+        return
 
     st.session_state.year_range = (from_year, to_year)
 
