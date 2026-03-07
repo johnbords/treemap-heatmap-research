@@ -113,8 +113,6 @@ def _inject_typography_css() -> None:
         unsafe_allow_html=True,
     )
 
-
-
 def typography_settings() -> None:
     _init_typography_state()
 
@@ -137,8 +135,6 @@ def typography_settings() -> None:
         max_value=28,
         key="hover_font_size_px",
     )
-
-
 
 def settings_expander(on_change_func=None, expanded=False, show_chart_type=True) -> None:
     _init_typography_state()
